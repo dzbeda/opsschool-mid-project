@@ -13,10 +13,7 @@ variable "project_name" {
   type = string
   default = "main"
 }
-variable "nginx-ami" {
-  type = string
-}
-variable "instance-type" {
+variable "ansible_server_instance-type" {
   type = string
   default = "t2.micro"
 }
