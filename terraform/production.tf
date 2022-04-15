@@ -35,4 +35,6 @@ module "ansible-server"{
      project_name = var.project_name
      vpc_id = module.vpc.vpcid
      key_name  = aws_key_pair.mid_project_key.key_name
+     iam_instance_profile   = aws_iam_instance_profile.ec2-role.name
+     depends_on = [local_file.mid_project_key]
 }

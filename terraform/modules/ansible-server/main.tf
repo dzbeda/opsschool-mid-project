@@ -4,6 +4,7 @@ resource "aws_instance" "ansible_server" {
   availability_zone = var.availability_zone
   subnet_id = var.subnet_id
   vpc_security_group_ids  = [aws_security_group.ansible_server.id]
+  iam_instance_profile = var.iam_instance_profile
   key_name = var.key_name
   provisioner "file" {
     source     = "mid_project_key.pem"
@@ -14,7 +15,6 @@ resource "aws_instance" "ansible_server" {
       private_key = file("mid_project_key.pem")      
     }   
   }
-  #iam_instance_profile = var.iam_instance_profile
   user_data = file("modules/ansible-server/ansible-userdata.tpl")
   tags = {
     Name = "${var.project_name}-ansible-server"
