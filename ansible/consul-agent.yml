@@ -20,3 +20,5 @@
     - name: run consul-server
       include_role:
         name: consul-agent
+
+    - include: register-service.yml

@@ -4,5 +4,5 @@
     dest: /etc/consul.d/
   when: '"web_server_80" in service_registration'
 
-# - name:
-#   shell: consul reload
+- name:
+  shell: consul reload

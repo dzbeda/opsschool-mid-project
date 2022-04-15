@@ -4,5 +4,4 @@
 - include: create-user-and-group.yml
 - include: dnsmasq-service.yml
 - include: resolve-service.yml
-- include: register-service.yml
 - include: install-consul.yml
