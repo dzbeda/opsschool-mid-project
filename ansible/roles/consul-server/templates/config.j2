@@ -1,7 +1,7 @@
 {
   "advertise_addr": "{{ec2_private_ip.content}}",
   "data_dir": "/opt/consul",
-  "datacenter": "opsschool-test",
+  "datacenter": "{{ consul_dc_name }}",
   "encrypt": "uDBV4e+LbFW3019YKPxIrg==",
   "disable_remote_exec": true,
   "disable_update_check": true,
