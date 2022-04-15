@@ -21,4 +21,3 @@
     - name: run consul-server
       include_role:
         name: consul-server
-      when: 'consul_version not in consul_version_output.stdout'
