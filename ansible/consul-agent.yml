@@ -1,4 +1,4 @@
-- hosts: _Name_opsschool_agent
+- hosts: _consul_server_false
   remote_user: ubuntu
   become: yes
   vars:
