@@ -1,0 +1,22 @@
+- hosts: _Name_opsschool_agent
+  remote_user: ubuntu
+  become: yes
+  vars:
+    consul_version: "1.11.4"
+    consul_dc_name: mid-project
+    service_registration: 
+      - web_server_80
+  tasks:
+    # - name: Set a hostname
+    #   hostname:
+    #     name: "consul-server-{{ groups['_consul_server_true'].index(inventory_hostname) }}"
+   
+    - name: verify if consuled is installed & consul version 
+      shell: consul -version
+      register: consul_version_output
+      ignore_errors: yes
+
+
+    - name: run consul-server
+      include_role:
+        name: consul-agent

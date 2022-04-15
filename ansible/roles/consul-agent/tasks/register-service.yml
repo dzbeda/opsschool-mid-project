@@ -1,0 +1,8 @@
+- name: register web-server on port 80
+  copy:
+    src: werserver-port-80.json
+    dest: /etc/consul.d/
+  when: '"web_server_80" in service_registration'
+
+# - name:
+#   shell: consul reload
