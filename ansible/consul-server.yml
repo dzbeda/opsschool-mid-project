@@ -1,0 +1,15 @@
+- hosts: _consul_server_true
+  remote_user: ubuntu
+  become: yes
+  vars:
+    CONSUL_VERSION: "1.11.4"
+  tasks:
+    # - name: Set a hostname
+    #   hostname:
+    #     name: "consul-server-{{ groups['_consul_server_true'].index(inventory_hostname) }}"
+   
+    - name: run consul-server
+      include_role:
+        name: consul-server
+
+  

@@ -1,0 +1,10 @@
+- name: Create folder for consul
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: consul
+    group: consul
+  with_items:
+    - /opt/consul
+    - /etc/consul.d
+    - /run/consul
