@@ -1,0 +1,21 @@
+{
+    "services": [
+      {
+        "id": "webserver-port80",
+        "name": "webserver-port-80",
+        "tags": [
+          "primary"
+        ],
+        "port": 80,
+        "checks": [
+          {
+            "id": "tcp",
+        "name": "tcp-80",
+        "tcp": "localhost:80",
+            "interval": "5s",
+            "timeout": "20s"
+          }
+        ]
+      }
+    ]
+  }
