@@ -2,7 +2,8 @@
   remote_user: ubuntu
   become: yes
   vars:
-    CONSUL_VERSION: "1.11.4"
+    consul_version: "1.11.4"
+    consul_dc_name: mid-project
   tasks:
     # - name: Set a hostname
     #   hostname:
