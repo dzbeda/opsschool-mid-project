@@ -6,3 +6,4 @@ variable "vpc_id" {}
 variable "tag_enviroment" {}
 variable "project_name" {}
 variable "availability_zone" {}
+variable "gateway_id" {}
