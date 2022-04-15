@@ -9,8 +9,16 @@
     #   hostname:
     #     name: "consul-server-{{ groups['_consul_server_true'].index(inventory_hostname) }}"
    
+    - name: verify if consuled is installed & consul version 
+      shell: consul -version
+      register: consul_version_output
+      ignore_errors: yes
+
+    # - debug:
+    #     msg: version is diffrent
+    #   when: 'consul_version not in output.stdout'
+
     - name: run consul-server
       include_role:
         name: consul-server
-
-  
+      when: 'consul_version not in consul_version_output.stdout'
