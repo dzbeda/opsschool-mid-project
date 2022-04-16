@@ -67,10 +67,10 @@
 
 - name: Verify ec2-private-ip
   uri:
-    url: http://169.254.169.254/latest/meta-data/public-ipv4
+    url: http://169.254.169.254/latest/meta-data/local-ipv4
     return_content: yes
-  register: ec2_public_ip
+  register: ec2_private_ip
 
-- name: show consul agent public ip
+- name: show consul agent private ip
   debug:
-    msg: consul server public ip - {{ ec2_public_ip.content }}
+    msg: consul agent private ip - {{ ec2_private_ip.content }}
