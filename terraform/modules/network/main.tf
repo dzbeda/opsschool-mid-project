@@ -78,9 +78,57 @@ resource "aws_route_table" "route-table-private-subnet" {
     cidr_block = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.nat-gw.*.id[count.index]
   }
-
   tags = {
     Name = "private-subnet-route-${var.project_name}"
     enviroment = var.tag_enviroment
+  }
+}
+
+## Consul-server-alb ##
+
+resource "aws_alb" "consul-server-alb" {
+  name = "Consul-server-alb"
+  internal = false
+  load_balancer_type = "application"
+  security_groups = [aws_security_group.alb_consul_server.id]
+  subnets = [for subnet in aws_subnet.public_subnet.*.id : subnet]
+  tags = {
+    Name = "clonsul-server-alb-${var.project_name}"
+    enviroment = var.tag_enviroment
+  }
+}
+
+resource "aws_alb_listener" "consul" {
+  load_balancer_arn = aws_alb.consul-server-alb.arn
+  port              = "8500"
+  protocol          = "HTTP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = var.consul_target_group_arn
+  }
+}
+
+## APB security group
+resource "aws_security_group" "alb_consul_server" {
+  name ="alb-consul-security-group"
+  vpc_id = var.vpc_id
+  ## Incoming roles
+  ingress {
+    from_port = 8500
+    to_port =  8500
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow consul UI access"
+  }
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+  tags = {
+    Name = "alb-consul-server-sg-${var.project_name}"
+    env = var.tag_enviroment
   }
 }

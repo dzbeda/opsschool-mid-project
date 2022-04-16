@@ -19,3 +19,6 @@ output "ansible-server-private-ip"{
 output "consul-server-private-ip" {
     value = module.consul-server.consul-server-private-ip
 }
+output "consul-server-target-group-arn" {
+    value = module.consul-server.consul-server-target-group-arn
+}

@@ -11,3 +11,4 @@ variable "number_of_private_subnets" {}
 variable "availability_zone" {}
 variable "tag_enviroment" {}
 variable "project_name" {}
+variable "consul_target_group_arn" {}

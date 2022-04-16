@@ -30,9 +30,10 @@ module "network" {
      gateway_id = module.vpc.gwid
      tag_enviroment= var.tag_enviroment
      project_name = var.project_name
+     consul_target_group_arn = module.consul-server.consul-server-target-group-arn
 }
 module "consul-server"{
-     consul_number_of_server = 2
+     consul_number_of_server = 3
      source = "./modules/consul-server"
      ami_id = "ami-00ddb0e5626798373"
      instance_type = var.consul-instance-type
