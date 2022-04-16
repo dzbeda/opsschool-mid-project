@@ -5,10 +5,10 @@ output "gwid" {
     value = module.vpc.gwid
 }
 output "private-subnet-id"{
-    value = module.private_subnet.privatesubnetid
+    value = module.network.privatesubnetid
 }
 output "public-subnet-id"{
-    value = module.public_subnet.publicsubnetid
+    value = module.network.publicsubnetid
 }
 output "ansible-server-public-ip"{
     value = module.ansible-server.ansible-server-public-ip

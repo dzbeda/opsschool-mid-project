@@ -24,3 +24,4 @@ variable "public-subnet-block" {
   type = list(string)
 }
 variable "availability_zone" {}
+variable "private_key_file_name" {}
