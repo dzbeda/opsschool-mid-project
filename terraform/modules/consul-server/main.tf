@@ -1,0 +1,82 @@
+resource "aws_instance" "consul_server" {
+  count = var.consul_number_of_server
+  ami           = var.ami_id
+  instance_type = var.instance_type
+  subnet_id =  element(var.private_subnet_id, count.index)
+  key_name      = var.key_name
+  iam_instance_profile = var.iam_instance_profile
+  vpc_security_group_ids = [aws_security_group.consul_server.id]
+  user_data   = templatefile("./modules/consul-server/consul-server-userdata.tpl", { 
+                server_id = "consul-server-${count.index + 1}"}
+  )
+  tags = {
+    Name = "consul-server-${count.index + 1}-${var.project_name}"
+    tag_enviroment= var.tag_enviroment
+    project_name = var.project_name
+    consul_server = "true"
+    role = "consul-server"
+  }
+}
+
+## Consul security group
+resource "aws_security_group" "consul_server" {
+  name ="consul-server-private-security-group"
+  vpc_id = var.vpc_id
+  ## Incoming roles
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    self        = true
+    description = "Allow all inside security group"
+  }
+  ingress {
+    from_port = 22
+    to_port =  22
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "SSH Connection"
+  }
+  ingress {
+    from_port = 8500
+    to_port =  8500
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow consul UI access"
+  }
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+  tags = {
+    Name = "consul-server-sg-${var.project_name}"
+    env = var.tag_enviroment
+  }
+}
+
+## Target group for supporting ALB
+
+resource "aws_alb_target_group" "consul-server" {
+  name     = "consul-server-target-group"
+  port     = 8500
+  protocol = "HTTP"
+  vpc_id   = var.vpc_id
+  health_check {
+    path = "/ui/mid-project/services"
+    port = 8500
+    healthy_threshold = 3
+    unhealthy_threshold = 2
+    timeout = 2
+    interval = 5
+    matcher = "200"  # has to be HTTP 200 or fails
+  }
+}
+
+resource "aws_alb_target_group_attachment" "consul-server" {
+  count = var.consul_number_of_server
+  target_group_arn = aws_alb_target_group.consul-server.arn
+  target_id        = aws_instance.consul_server.*.id[count.index]
+  port             = 8500
+}

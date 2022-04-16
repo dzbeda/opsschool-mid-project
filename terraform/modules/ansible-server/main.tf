@@ -7,17 +7,17 @@ resource "aws_instance" "ansible_server" {
   iam_instance_profile = var.iam_instance_profile
   key_name = var.key_name
   provisioner "file" {
-    source     = "mid_project_key.pem"
+    source     = var.private_key_file_name
     destination = "/home/ubuntu/.ssh/id_rsa"
     connection {   
       host        = self.public_ip
       user        = "ubuntu"
-      private_key = file("mid_project_key.pem")      
+      private_key = file(var.private_key_file_name)      
     }   
   }
   user_data = file("modules/ansible-server/ansible-userdata.tpl")
   tags = {
-    Name = "${var.project_name}-ansible-server"
+    Name = "ansible-server-${var.project_name}"
     env = var.tag_enviroment
     role = "ansible-server"
   }
@@ -42,6 +42,5 @@ resource "aws_security_group" "ansible_server" {
   tags = {
     Name = "${var.project_name}-ansible-server-sg"
     env = var.tag_enviroment
-    role = "ansible-server"
   }
 }
