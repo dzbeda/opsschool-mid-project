@@ -7,7 +7,7 @@ resource "aws_subnet" "public_subnet" {
   vpc_id = var.vpc_id
   map_public_ip_on_launch = true
   tags = {
-    Name = "${var.project_name}-public-subnet-${count.index+1}"
+    Name = "public-subnet-${count.index+1}-${var.project_name}"
     enviroment = var.tag_enviroment
   }
 }
@@ -23,7 +23,7 @@ resource "aws_route_table" "route-table-public-subnet" {
   }
 
   tags = {
-    Name = "${var.project_name}-public-subnet-roue"
+    Name = "public-subnet-route-${var.project_name}"
     enviroment = var.tag_enviroment
   }
 }
@@ -44,7 +44,7 @@ resource "aws_nat_gateway" "nat-gw" {
   allocation_id = aws_eip.nat-elip.*.id[count.index]
   subnet_id     = aws_subnet.public_subnet.*.id[count.index]
   tags = {
-    Name = "${var.project_name}-nat-gw-${count.index + 1}"
+    Name = "nat-gw-${count.index + 1}-${var.project_name}"
     enviroment = var.tag_enviroment
   }
 }
@@ -58,7 +58,7 @@ resource "aws_subnet" "private_subnet" {
   vpc_id = var.vpc_id
   map_public_ip_on_launch = false
   tags = {
-    Name = "${var.project_name}-private-subnet-${count.index+1}"
+    Name = "private-subnet-${var.project_name}-${count.index+1}"
     enviroment = var.tag_enviroment
   }
 }
@@ -80,7 +80,7 @@ resource "aws_route_table" "route-table-private-subnet" {
   }
 
   tags = {
-    Name = "${var.project_name}-private-subnet-roue"
+    Name = "private-subnet-route-${var.project_name}"
     enviroment = var.tag_enviroment
   }
 }

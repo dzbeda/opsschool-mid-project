@@ -17,7 +17,7 @@ resource "aws_instance" "ansible_server" {
   }
   user_data = file("modules/ansible-server/ansible-userdata.tpl")
   tags = {
-    Name = "${var.project_name}-ansible-server"
+    Name = "ansible-server-${var.project_name}"
     env = var.tag_enviroment
     role = "ansible-server"
   }
@@ -42,6 +42,5 @@ resource "aws_security_group" "ansible_server" {
   tags = {
     Name = "${var.project_name}-ansible-server-sg"
     env = var.tag_enviroment
-    role = "ansible-server"
   }
 }

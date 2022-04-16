@@ -1,8 +1,8 @@
-output "publicsubnetid"{
+output "public-subnet-id"{
     value = aws_subnet.public_subnet.*.id
 }
 
-output "privatesubnetid"{
+output "private-subnet-id"{
     value = aws_subnet.private_subnet.*.id
 }
 
