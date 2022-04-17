@@ -1,0 +1,27 @@
+- name: ensure the jenkins apt repository key is installed
+  apt_key: 
+    url: https://pkg.jenkins.io/debian-stable/jenkins.io.key 
+    state: present
+
+- name: ensure the repository is configured
+  apt_repository: 
+    repo: deb https://pkg.jenkins.io/debian-stable binary/
+    state: present
+
+
+- name: ensure jenkins is installed
+  apt: 
+    name: jenkins
+
+- name: Replace jenkins port
+  lineinfile:
+    path: /etc/default/jenkins
+    regexp: 'HTTP_PORT=8080'
+    line: HTTP_PORT={{ jenkins_ui_port }}
+
+
+- name: ensure jenkins is running
+  service: 
+      name: jenkins
+      state: restarted
+      enabled: yes

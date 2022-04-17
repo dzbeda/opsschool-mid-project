@@ -1,0 +1,31 @@
+- hosts: _role_jenkins_server
+  remote_user: ubuntu
+  become: yes
+  vars:
+    jenkins_ui_port: 9000
+    consul_dc_name: mid-project
+  tasks:
+    # - name: run jenkins-server
+    #   include_role:
+    #     name: jenkins-server
+
+    # - name: Verify jenkins server private ip
+    #   uri:
+    #     url: http://169.254.169.254/latest/meta-data/local-ipv4
+    #     return_content: yes
+    #   register: ec2_private_ip
+
+    # - name: show jenkins servers private ip
+    #   debug:
+    #     msg: jenkins server private ip - {{ ec2_private_ip.content }}
+
+
+    - name:
+      shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+      register: admin_code
+    
+    - debug:
+        msg: Enter the following id for UI login {{admin_code.stdout}}
+   
+    - debug:
+        msg: Jenkins sever is running on port {{ jenkins_ui_port }}
