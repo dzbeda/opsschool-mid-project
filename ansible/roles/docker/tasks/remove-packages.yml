@@ -1,0 +1,11 @@
+- name: remove packages
+  apt:
+    name: "{{item}}"
+    state: absent
+  with_items:
+    - docker 
+    - docker-engine
+    - docker.io
+    - containerd
+    - runc
+  when: ansible_os_family == "Debian"

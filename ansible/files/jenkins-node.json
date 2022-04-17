@@ -1,0 +1,21 @@
+{
+    "services": [
+      {
+        "id": "jenkins-node",
+        "name": "jenkins-node",
+        "tags": [
+          "primary"
+        ],
+        "port": 80,
+        "checks": [
+          {
+            "id": "tcp",
+        "name": "tcp-22",
+        "tcp": "localhost:22",
+            "interval": "30s",
+            "timeout": "20s"
+          }
+        ]
+      }
+    ]
+  }

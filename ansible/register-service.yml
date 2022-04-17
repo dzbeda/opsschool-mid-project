@@ -4,5 +4,13 @@
     dest: /etc/consul.d/
   when: '"web_server_80" in service_registration'
 
+- name: register jenkins node port 22
+  copy:
+    src: jenkins-node.json
+    dest: /etc/consul.d/
+  when: '"jenkins-node" in service_registration'
+
 - name:
   shell: consul reload
+
+
