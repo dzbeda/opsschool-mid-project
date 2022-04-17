@@ -1,0 +1,11 @@
+- name: Create Consul user and group
+  user:
+      name: jenkins
+      state: present
+
+- name: create jenkins folder 
+  file:
+    path: /var/jenkins
+    state: directory
+    owner: jenkins
+    group: jenkins

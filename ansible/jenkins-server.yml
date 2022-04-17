@@ -1,0 +1,44 @@
+- hosts: _role_jenkins_server
+  remote_user: ubuntu
+  become: yes
+  vars:
+    jenkins_ui_port: 9000
+    alb_dns: alb1-308494743.us-east-1.elb.amazonaws.com
+  tasks:
+    # - name: run jenkins-server
+    #   include_role:
+    #     name: jenkins-server
+
+    # - name: Verify jenkins server private ip
+    #   uri:
+    #     url: http://169.254.169.254/latest/meta-data/local-ipv4
+    #     return_content: yes
+    #   register: ec2_private_ip
+
+    # - name: show jenkins servers private ip
+    #   debug:
+    #     msg: jenkins server private ip - {{ ec2_private_ip.content }}
+
+    - name:
+      shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+      register: admin_code
+    
+    - debug:
+        msg: Enter the following id for UI login {{admin_code.stdout}}
+   
+    - debug:
+        msg: Jenkins sever is running on port {{ jenkins_ui_port }}
+
+    - name: install plugin
+      delegate_to: localhost
+      shell: java -jar ./files/jenkins-cli.jar -auth admin:{{admin_code.stdout}} -s http://{{ alb_dns }}:{{ jenkins_ui_port }} -webSocket install-plugin {{ item }}
+      with_items:
+        - github-branch-source:1598.v91207e9f9b_4a_
+        - workflow-aggregator:2.7
+        - ssh-slaves:1.806.v2253cedd3295
+        - docker-workflow:1.28
+        - docker-plugin:1.2.8
+
+    - name: restart jenkins
+      delegate_to: localhost
+      shell: java -jar ./files/jenkins-cli.jar -auth admin:{{admin_code.stdout}} -s http://{{ alb_dns }}:{{ jenkins_ui_port }} -webSocket restart

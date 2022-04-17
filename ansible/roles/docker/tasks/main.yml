@@ -1,0 +1,4 @@
+---
+# tasks file for install-docker
+- include: remove-packages.yml
+- include: install-packages.yml

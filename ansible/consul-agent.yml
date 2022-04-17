@@ -4,8 +4,9 @@
   vars:
     consul_version: "1.11.4"
     consul_dc_name: mid-project
-    service_registration: 
-      - web_server_80
+    # service_registration: 
+    #   - web_server_80
+    #   - jenkins-node
   tasks:
     # - name: Set a hostname
     #   hostname:
@@ -21,4 +22,4 @@
       include_role:
         name: consul-agent
 
-    - include: register-service.yml
+    #- include: register-service.yml

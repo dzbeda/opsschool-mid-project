@@ -1,0 +1,4 @@
+---
+# tasks file for jenkins-server
+- include: install-packges.yml
+- include: install-jenkins-server.yml
