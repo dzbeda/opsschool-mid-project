@@ -6,3 +6,4 @@
   apt:
     pkg:
         - openjdk-11-jdk
+        - git
