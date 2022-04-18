@@ -3,11 +3,19 @@
   become: yes
   vars:
     jenkins_ui_port: 9000
-    alb_dns: alb1-308494743.us-east-1.elb.amazonaws.com
+    alb_dns: alb1-1620681928.us-east-1.elb.amazonaws.com
   tasks:
-    # - name: run jenkins-server
-    #   include_role:
-    #     name: jenkins-server
+
+    - name: Install consul agent
+      include_role:
+        name: consul-agent
+      vars:
+        consul_version: "1.11.4"
+        consul_dc_name: mid-project
+
+    - name: run jenkins-server
+      include_role:
+        name: jenkins-server
 
     # - name: Verify jenkins server private ip
     #   uri:
@@ -38,6 +46,7 @@
         - ssh-slaves:1.806.v2253cedd3295
         - docker-workflow:1.28
         - docker-plugin:1.2.8
+        - jenkins-plugin-cli --plugins configuration-as-code:1414.v878271fc496f
 
     - name: restart jenkins
       delegate_to: localhost

@@ -9,3 +9,4 @@
     state: directory
     owner: jenkins
     group: jenkins
+    mode: '0775'

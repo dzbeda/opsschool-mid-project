@@ -1,0 +1,23 @@
+- hosts: _role_jenkins_node
+  remote_user: ubuntu
+  become: yes
+  tasks:
+    - name: Install prerequsites for jenkins node
+      include_role:
+        name: jenkins-node
+    
+    - name: Install consul agent
+      include_role:
+        name: consul-agent
+      vars:
+        consul_version: "1.11.4"
+        consul_dc_name: mid-project
+
+    - name: run docker installation
+      include_role:
+        name: docker
+    
+    - include: register-service.yml
+      vars:
+          service_registration: 
+            - jenkins-node

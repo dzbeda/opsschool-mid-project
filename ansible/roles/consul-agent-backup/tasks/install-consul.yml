@@ -1,0 +1,76 @@
+- name: Create folder for consul
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: consul
+    group: consul
+  with_items:
+    - /opt/consul
+    - /etc/consul.d
+    - /run/consul
+  when: 'consul_version not in consul_version_output.stdout'
+
+- name: download consul file
+  get_url:
+    url: https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_linux_amd64.zip
+    dest: /tmp
+  register: file
+  when: 'consul_version not in consul_version_output.stdout'
+
+- debug:
+    msg: downloaded file - {{ file.dest }}
+  when: 'consul_version not in consul_version_output.stdout'
+
+- name: unzip consul
+  unarchive:
+    src: "{{ file.dest }}"
+    dest: /usr/local/bin/
+    owner: consul
+    group: consul
+    remote_src: yes
+  when: 'consul_version not in consul_version_output.stdout'
+
+
+- name: Verify ec2-private-ip
+  uri:
+    url: http://169.254.169.254/latest/meta-data/local-ipv4
+    return_content: yes
+  register: ec2_private_ip
+
+
+- name: copy consul config file
+  template:
+    src: config.j2
+    dest: /etc/consul.d/config.json
+
+- name: Create consul service
+  copy:
+    src: consul.service
+    dest: /etc/systemd/system/
+  when: 'consul_version not in consul_version_output.stdout'
+
+- name: Reload service
+  systemd:
+    daemon_reload: yes
+  when: 'consul_version not in consul_version_output.stdout'
+
+- name: Enable consul service
+  service:
+    name: consul
+    enabled: yes
+  when: 'consul_version not in consul_version_output.stdout'
+
+- name: Restart consul service
+  service:
+    name: consul
+    state: restarted
+
+- name: Verify consul agent private ip
+  uri:
+    url: http://169.254.169.254/latest/meta-data/local-ipv4
+    return_content: yes
+  register: ec2_private_ip
+
+- name: show consul agent private ip
+  debug:
+    msg: consul agent private ip - {{ ec2_private_ip.content }}
