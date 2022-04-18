@@ -6,7 +6,7 @@
         "tags": [
           "primary"
         ],
-        "port": 80,
+        "port": 22,
         "checks": [
           {
             "id": "tcp",

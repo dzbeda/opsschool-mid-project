@@ -1,0 +1,4 @@
+- name: verify if consuled is installed & consul version 
+  shell: consul -version
+  register: consul_version_output
+  ignore_errors: yes

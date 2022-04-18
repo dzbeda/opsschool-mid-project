@@ -1,6 +1,5 @@
 ---
 # tasks file for consul-server
-- include: verify-version.yml
 - include: install-required-packages.yml
 - include: create-user-and-group.yml
 - include: dnsmasq-service.yml
