@@ -1,4 +1,4 @@
-- name: Create Consul user and group
+- name: Create jenkins user and group
   user:
       name: jenkins
       state: present
@@ -7,6 +7,6 @@
   file:
     path: /var/jenkins
     state: directory
-    owner: jenkins
-    group: jenkins
+    owner: ubuntu
+    group: ubuntu
     mode: '0775'
