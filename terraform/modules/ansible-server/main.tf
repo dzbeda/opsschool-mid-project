@@ -1,20 +1,20 @@
 resource "aws_instance" "ansible_server" {
   ami               = var.ami_id
   instance_type     = var.instance_type
-  availability_zone = var.availability_zone
-  subnet_id = var.subnet_id
+  #availability_zone = var.availability_zone
+  subnet_id = var.private_subnet_id
   vpc_security_group_ids  = [aws_security_group.ansible_server.id]
   iam_instance_profile = var.iam_instance_profile
   key_name = var.key_name
-  provisioner "file" {
-    source     = var.private_key_file_name
-    destination = "/home/ubuntu/.ssh/id_rsa"
-    connection {   
-      host        = self.public_ip
-      user        = "ubuntu"
-      private_key = file(var.private_key_file_name)      
-    }   
-  }
+  # provisioner "file" {
+  #   source     = var.private_key_file_name
+  #   destination = "/home/ubuntu/.ssh/id_rsa"
+  #   connection {   
+  #     host        = self.public_ip
+  #     user        = "ubuntu"
+  #     private_key = file(var.private_key_file_name)      
+  #   }   
+  # }
   user_data = file("modules/ansible-server/ansible-userdata.tpl")
   tags = {
     Name = "ansible-server-${var.project_name}"

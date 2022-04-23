@@ -26,3 +26,10 @@ variable "public-subnet-block" {
 variable "availability_zone" {}
 variable "private_key_file_name" {}
 variable "consul-instance-type" {}
+variable "jenkins-node-instance-type" {}
+variable "jenkins-server-instance-type" {}
+variable "bastion_server_instance-type" {
+  type = string
+  default = "t2.micro"
+}
+

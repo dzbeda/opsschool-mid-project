@@ -84,22 +84,22 @@ resource "aws_route_table" "route-table-private-subnet" {
   }
 }
 
-## Consul-server-alb ##
+## Application Load Balancer - alb ##
 
-resource "aws_alb" "consul-server-alb" {
-  name = "Consul-server-alb"
+resource "aws_alb" "alb1" {
+  name = "alb1"
   internal = false
   load_balancer_type = "application"
-  security_groups = [aws_security_group.alb_consul_server.id]
+  security_groups = [aws_security_group.alb1_sg.id]
   subnets = [for subnet in aws_subnet.public_subnet.*.id : subnet]
   tags = {
-    Name = "clonsul-server-alb-${var.project_name}"
+    Name = "alb1-${var.project_name}"
     enviroment = var.tag_enviroment
   }
 }
 
 resource "aws_alb_listener" "consul" {
-  load_balancer_arn = aws_alb.consul-server-alb.arn
+  load_balancer_arn = aws_alb.alb1.arn
   port              = "8500"
   protocol          = "HTTP"
 
@@ -109,9 +109,20 @@ resource "aws_alb_listener" "consul" {
   }
 }
 
+resource "aws_alb_listener" "jenkins" {
+  load_balancer_arn = aws_alb.alb1.arn
+  port              = "9000"
+  protocol          = "HTTP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = var.jenkins_server_target_group_arn
+  }
+}
+
 ## APB security group
-resource "aws_security_group" "alb_consul_server" {
-  name ="alb-consul-security-group"
+resource "aws_security_group" "alb1_sg" {
+  name ="alb1-security-group"
   vpc_id = var.vpc_id
   ## Incoming roles
   ingress {
@@ -121,6 +132,13 @@ resource "aws_security_group" "alb_consul_server" {
     cidr_blocks = ["0.0.0.0/0"]
     description = "Allow consul UI access"
   }
+  ingress {
+    from_port = 9000
+    to_port =  9000
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow jenkins UI access"
+  }
   egress {
     from_port        = 0
     to_port          = 0
@@ -128,7 +146,7 @@ resource "aws_security_group" "alb_consul_server" {
     cidr_blocks      = ["0.0.0.0/0"]
   }
   tags = {
-    Name = "alb-consul-server-sg-${var.project_name}"
+    Name = "alb1-sg-${var.project_name}"
     env = var.tag_enviroment
   }
 }
