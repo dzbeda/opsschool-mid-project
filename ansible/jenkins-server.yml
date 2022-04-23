@@ -1,0 +1,79 @@
+- hosts: _role_jenkins_server
+  remote_user: ubuntu
+  become: yes
+  vars:
+    jenkins_ui_port: 9000
+  tasks:
+
+    # - name: Install consul agent
+    #   include_role:
+    #     name: consul-agent
+    #   vars:
+    #     consul_version: "1.11.4"
+    #     consul_dc_name: mid-project
+
+    # - name: run jenkins-server
+    #   include_role:
+    #     name: jenkins-server
+
+    # - name: copy private key
+    #   copy:
+    #     src: /home/ubuntu/mid-project/terraform/mid-project-key.pem
+    #     dest: /home/ubuntu/.ssh/id_rsa
+    #     owner: ubuntu
+    #     group: ubuntu
+    #     mode: '0400'
+
+    # - name: create public key
+    #   copy:
+    #     src: /home/ubuntu/.ssh/authorized_keys
+    #     dest: /home/ubuntu/.ssh/id_rsa.pub
+    #     owner: ubuntu
+    #     group: ubuntu
+    #     remote_src: yes
+
+    - name: Verify jenkins server private ip
+      uri:
+        url: http://169.254.169.254/latest/meta-data/local-ipv4
+        return_content: yes
+      register: jenkins_private_ip
+
+    - name:
+      shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+      register: admin_code
+    
+    # - debug:
+    #     msg: Enter the following id for UI login {{admin_code.stdout}}
+   
+    # - debug:
+    #     msg: Jenkins sever is running on port {{ jenkins_ui_port }}
+
+    # - name: copy cli tool
+    #   copy:
+    #     src: ./files/jenkins-cli.jar
+    #     dest: /home/ubuntu/jenkins-cli.jar
+
+    # - name: install plugin
+    #   shell: java -jar /home/ubuntu/jenkins-cli.jar -auth admin:{{admin_code.stdout}} -s http://{{ jenkins_private_ip.content }}:{{ jenkins_ui_port }} -webSocket install-plugin {{ item }}
+    #   with_items:
+    #     - github-branch-source:latest
+    #     - workflow-aggregator:latest
+    #     - ssh-slaves:latest
+    #     - docker-workflow:latest
+    #     - docker-plugin:latest
+    #     - configuration-as-code:latest
+
+    - name: restart jenkins server 
+      service: 
+        name: jenkins
+        state: restarted
+
+    - name:  # make sure to install the module ansible-galaxy collection install community.general
+      lineinfile:
+         path: /var/lib/jenkins/io.jenkins.plugins.casc.CasCGlobalConfig.xml
+         regexp: '<configurationPath>'
+         line: '  <configurationPath>/var/lib/jenkins/casc.yaml</configurationPath>'
+
+    - name: restart jenkins
+      #delegate_to: localhost
+      shell: java -jar /home/ubuntu/jenkins-cli.jar -auth admin:{{admin_code.stdout}} -s http://{{ jenkins_private_ip.content }}:{{ jenkins_ui_port }} -webSocket restart

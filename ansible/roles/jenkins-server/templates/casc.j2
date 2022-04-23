@@ -1,0 +1,19 @@
+jenkins:
+  nodes:
+  - permanent:
+      labelString: "any"
+      launcher:
+        ssh:
+          credentialsId: "9c219b6f-82da-4c40-83dd-7effce8d585b"
+          host: "jenkins-node.service.consul"
+          port: 22
+          sshHostKeyVerificationStrategy: "nonVerifyingKeyVerificationStrategy"
+      name: "test-node"
+      nodeDescription: "this is out consul node"
+      numExecutors: 2
+      remoteFS: "/var/jenkins"
+      retentionStrategy: "always"
+  numExecutors: 2
+  primaryView:
+    all:
+      name: "all"

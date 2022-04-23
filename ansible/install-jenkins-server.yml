@@ -3,7 +3,7 @@
   become: yes
   vars:
     jenkins_ui_port: 9000
-    alb_dns: alb1-1620681928.us-east-1.elb.amazonaws.com
+    alb_dns: alb1-2056122047.us-east-1.elb.amazonaws.com
   tasks:
 
     - name: Install consul agent
@@ -41,12 +41,12 @@
       delegate_to: localhost
       shell: java -jar ./files/jenkins-cli.jar -auth admin:{{admin_code.stdout}} -s http://{{ alb_dns }}:{{ jenkins_ui_port }} -webSocket install-plugin {{ item }}
       with_items:
-        - github-branch-source:1598.v91207e9f9b_4a_
-        - workflow-aggregator:2.7
-        - ssh-slaves:1.806.v2253cedd3295
-        - docker-workflow:1.28
-        - docker-plugin:1.2.8
-        - jenkins-plugin-cli --plugins configuration-as-code:1414.v878271fc496f
+        - github-branch-source:latest
+        - workflow-aggregator:latest
+        - ssh-slaves:latest
+        - docker-workflow:latest
+        - docker-plugin:latest
+        - configuration-as-code:latest
 
     - name: restart jenkins
       delegate_to: localhost
