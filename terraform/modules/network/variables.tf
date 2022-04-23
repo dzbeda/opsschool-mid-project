@@ -12,3 +12,4 @@ variable "availability_zone" {}
 variable "tag_enviroment" {}
 variable "project_name" {}
 variable "consul_target_group_arn" {}
+variable "jenkins_server_target_group_arn" {}
