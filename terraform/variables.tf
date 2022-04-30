@@ -32,4 +32,8 @@ variable "bastion_server_instance-type" {
   type = string
   default = "t2.micro"
 }
-
+variable "eks_cluster_name" {}
+locals {
+  k8s_service_account_namespace = "default"
+  k8s_service_account_name      = "opsschool-sa"
+}

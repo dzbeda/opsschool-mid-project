@@ -80,3 +80,9 @@ module "jenkins"{
      iam_instance_profile   = aws_iam_instance_profile.ec2-role.name
      alb1_security_group_id = module.network.alb1-security-group-id
 }
+module "eks-cluster"{
+  source = "./modules/eks-cluster"
+  vpc_id = module.vpc.vpcid
+  subnet_ids   = module.network.public-subnet-id
+  eks_cluster_name = var.eks_cluster_name
+}
