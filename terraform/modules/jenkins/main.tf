@@ -5,15 +5,6 @@ resource "aws_instance" "jenkins_server" {
   key_name      = var.key_name
   iam_instance_profile = var.iam_instance_profile
   vpc_security_group_ids = [aws_security_group.jenkins.id]
-  # provisioner "file" {
-  #   source     = var.private_key_file_name
-  #   destination = "/home/ubuntu/.ssh/id_rsa"
-  #   connection {   
-  #     host        = self.private_ip
-  #     user        = "ubuntu"
-  #     private_key = file(var.private_key_file_name)      
-  #   }   
-  # }
   user_data   = templatefile("./modules/jenkins/jenkins-server-userdata.tpl", { 
                 server_id = "jenkins-server-1"}
   )

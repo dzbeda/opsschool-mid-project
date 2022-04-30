@@ -14,3 +14,4 @@ consul-instance-type = "t2.micro"
 jenkins-node-instance-type = "t2.micro"
 jenkins-server-instance-type = "t2.micro"
 eks_cluster_name = "mid-project-eks-cluster"
+create_ansible_server = false

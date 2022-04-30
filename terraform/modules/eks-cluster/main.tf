@@ -33,8 +33,10 @@ module "eks" {
   enable_irsa = true
   
   tags = {
-    Name = "eks-sg-${var.project_name}"
+    Name = "eks-cluster-${var.project_name}"
     env = var.tag_enviroment
+    GithubRepo  = "terraform-aws-eks"
+    GithubOrg   = "terraform-aws-modules"
   }
   vpc_id = var.vpc_id
   eks_managed_node_group_defaults = {

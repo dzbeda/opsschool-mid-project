@@ -16,6 +16,21 @@
       include_role:
         name: jenkins-server
 
+    - name: copy private key
+      copy:
+        src: /home/ubuntu/mid-project/terraform/mid-project-key.pem
+        dest: /home/ubuntu/.ssh/id_rsa
+        owner: ubuntu
+        group: ubuntu
+        mode: '0400'
+
+    - name: create public key
+      copy:
+        src: /home/ubuntu/.ssh/authorized_keys
+        dest: /home/ubuntu/.ssh/id_rsa.pub
+        owner: ubuntu
+        group: ubuntu
+        remote_src: yes
 
     - name: Verify jenkins server private ip
       uri:

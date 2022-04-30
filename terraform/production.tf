@@ -22,33 +22,25 @@ module "network" {
 }
 module "ansible-server"{
      source = "./modules/ansible-server"
+     ansible_number_of_servers  = var.create_ansible_server ? 1 : 0
      ami_id = "ami-04505e74c0741db8d"
      instance_type = var.ansible_server_instance-type
-     #availability_zone = var.availability_zone[0]
-     #subnet_id = module.network.public-subnet-id[0]
      private_subnet_id = module.network.private-subnet-id[0]
      tag_enviroment= var.tag_enviroment
      project_name = var.project_name
      vpc_id = module.vpc.vpcid
      key_name  = aws_key_pair.mid_project_key.key_name
-     #private_key_file_name = var.private_key_file_name
      iam_instance_profile   = aws_iam_instance_profile.ec2-role.name
-     #depends_on = [local_file.mid_project_key]
 }
 module "bastion-server"{
      source = "./modules/bastion-server"
      ami_id = "ami-04505e74c0741db8d"
      instance_type = var.bastion_server_instance-type
-     #availability_zone = var.availability_zone[0]
      subnet_id = module.network.public-subnet-id[0]
-     #private_subnet_id = module.network.private-subnet-id[0]
      tag_enviroment= var.tag_enviroment
      project_name = var.project_name
      vpc_id = module.vpc.vpcid
      key_name  = aws_key_pair.mid_project_key.key_name
-     #private_key_file_name = var.private_key_file_name
-     #iam_instance_profile   = aws_iam_instance_profile.ec2-role.name
-     #depends_on = [local_file.mid_project_key]
 }
 
 module "consul-server"{
