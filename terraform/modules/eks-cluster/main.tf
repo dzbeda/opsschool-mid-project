@@ -18,6 +18,10 @@ resource "aws_security_group" "all_worker_mgmt" {
 
     cidr_blocks = ["0.0.0.0/0"]
   }
+  tags = {
+    Name = "eks-sg-${var.project_name}"
+    env = var.tag_enviroment
+  }
 }
 module "eks" {
   source          = "terraform-aws-modules/eks/aws"
@@ -29,9 +33,8 @@ module "eks" {
   enable_irsa = true
   
   tags = {
-    Environment = "training"
-    GithubRepo  = "terraform-aws-eks"
-    GithubOrg   = "terraform-aws-modules"
+    Name = "eks-sg-${var.project_name}"
+    env = var.tag_enviroment
   }
   vpc_id = var.vpc_id
   eks_managed_node_group_defaults = {

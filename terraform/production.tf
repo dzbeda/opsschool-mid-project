@@ -83,6 +83,13 @@ module "jenkins"{
 module "eks-cluster"{
   source = "./modules/eks-cluster"
   vpc_id = module.vpc.vpcid
-  subnet_ids   = module.network.public-subnet-id
+  subnet_ids   = module.network.private-subnet-id
   eks_cluster_name = var.eks_cluster_name
+  tag_enviroment= var.tag_enviroment
+  project_name = var.project_name
+}
+resource "null_resource" "update_kubectl_configuration" {
+  provisioner "local-exec" {
+    command = "aws eks update-kubeconfig --region ${var.aws_region} --name ${var.eks_cluster_name}"
+  }
 }
