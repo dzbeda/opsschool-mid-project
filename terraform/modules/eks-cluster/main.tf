@@ -1,4 +1,5 @@
 resource "kubernetes_service_account" "opsschool_sa" {
+  depends_on = [module.eks]
   metadata {
     name      = local.k8s_service_account_name
     namespace = local.k8s_service_account_namespace
@@ -47,17 +48,17 @@ module "eks" {
 
   eks_managed_node_groups = {
     
-    group_1 = {
-      min_size     = 2
+    eks_group_1 = {
+      min_size     = 1
       max_size     = 6
-      desired_size = 2
+      desired_size = 1
       instance_types = ["t2.micro"]
     }
 
-    group_2 = {
-      min_size     = 2
+    eks_group_2 = {
+      min_size     = 1
       max_size     = 6
-      desired_size = 2
+      desired_size = 1
       instance_types = ["t2.micro"]
 
     }
@@ -80,6 +81,7 @@ module "iam_assumable_role_admin" {
   provider_url                  = replace(module.eks.cluster_oidc_issuer_url, "https://", "")
   role_policy_arns              = ["arn:aws:iam::aws:policy/AmazonEC2FullAccess"]
   oidc_fully_qualified_subjects = ["system:serviceaccount:${local.k8s_service_account_namespace}:${local.k8s_service_account_name}"]
+  depends_on = [module.eks]
 }
 
 provider "kubernetes" {

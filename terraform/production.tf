@@ -80,8 +80,26 @@ module "eks-cluster"{
   tag_enviroment= var.tag_enviroment
   project_name = var.project_name
 }
+
+resource "time_sleep" "wait_90_seconds" {
+  depends_on = [module.eks-cluster]
+  create_duration = "90s"
+}
 resource "null_resource" "update_kubectl_configuration" {
+  depends_on = [time_sleep.wait_90_seconds]
   provisioner "local-exec" {
     command = "aws eks update-kubeconfig --region ${var.aws_region} --name ${var.eks_cluster_name}"
+  }
+}
+resource "null_resource" "copy_private_key" {
+  depends_on = [module.bastion-server]
+  provisioner "local-exec" {
+    command = "./create_private.sh"
+  }
+}
+resource "null_resource" "Update_ansible_cfg" {
+  depends_on = [module.bastion-server]
+  provisioner "local-exec" {
+    command = "sed -i -r 's/(\\b[0-9]{1,3}\\.){3}[0-9]{1,3}\\b'/${module.bastion-server.bastion-server-public-ip}/ ../ansible/ansible.cfg"
   }
 }
