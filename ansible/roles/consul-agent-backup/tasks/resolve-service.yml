@@ -1,9 +1,0 @@
-- name: Create systemd-resolved configuration
-  copy:
-    src: resolved.conf
-    dest: /etc/systemd/
-
-- name: Restart systemd-resolved service
-  service:
-    name: systemd-resolved.service
-    state: restarted

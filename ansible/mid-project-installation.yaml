@@ -1,0 +1,3 @@
+- include: install-consul-server.yml
+- include: install-jenkins-node.yml
+- include: install-jenkins-server.yml

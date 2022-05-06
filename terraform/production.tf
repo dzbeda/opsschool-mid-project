@@ -59,7 +59,8 @@ module "consul-server"{
 }
 module "jenkins"{
      source = "./modules/jenkins"
-     ami_id = "ami-0e472ba40eb589f49"
+     jenkins_server_ami_id = "ami-0e8e33e291ad9f440"
+     jenkins_client_ami_id = "ami-0e472ba40eb589f49"
      jenkins_nodes_number_of_server = 2
      jenkins-server-instance-type = var.jenkins-server-instance-type
      jenkins-node-instance-type = var.jenkins-node-instance-type

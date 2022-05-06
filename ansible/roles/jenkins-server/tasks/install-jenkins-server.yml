@@ -1,14 +1,3 @@
-- name: ensure the jenkins apt repository key is installed
-  apt_key: 
-    url: https://pkg.jenkins.io/debian-stable/jenkins.io.key 
-    state: present
-
-- name: ensure the repository is configured
-  apt_repository: 
-    repo: deb https://pkg.jenkins.io/debian-stable binary/
-    state: present
-
-
 - name: ensure jenkins is installed
   apt: 
     name: jenkins
@@ -24,6 +13,11 @@
     path: /lib/systemd/system/jenkins.service
     regexp: 'Environment="JAVA_OPTS=-Djava.awt.headless=true"'
     line: Environment="JAVA_OPTS=-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false"
+
+- name: copy csca xml describe path configuration
+  template:
+    src: casc_path.j2
+    dest: /var/lib/jenkins/io.jenkins.plugins.casc.CasCGlobalConfig.xml
 
 - name: copy csca configuration
   template:

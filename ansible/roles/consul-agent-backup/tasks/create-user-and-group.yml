@@ -1,4 +1,0 @@
-- name: Create Consul user and group
-  user:
-      name: consul
-      state: present

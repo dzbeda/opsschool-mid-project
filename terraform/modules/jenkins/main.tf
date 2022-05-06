@@ -1,5 +1,5 @@
 resource "aws_instance" "jenkins_server" {
-  ami           = var.ami_id
+  ami           = var.jenkins_server_ami_id
   instance_type = var.jenkins-server-instance-type
   subnet_id =  var.private_subnet_id[0]
   key_name      = var.key_name
@@ -18,7 +18,7 @@ resource "aws_instance" "jenkins_server" {
 
 resource "aws_instance" "jenkins_node" {
   count = var.jenkins_nodes_number_of_server
-  ami           = var.ami_id
+  ami           = var.jenkins_client_ami_id
   instance_type = var.jenkins-node-instance-type
   subnet_id =  element(var.private_subnet_id, count.index)
   key_name      = var.key_name
