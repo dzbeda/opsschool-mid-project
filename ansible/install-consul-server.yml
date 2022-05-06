@@ -5,10 +5,6 @@
     consul_version: "1.11.4"
     consul_dc_name: mid-project
   tasks:
-    # - name: Set a hostname
-    #   hostname:
-    #     name: "consul-server-{{ groups['_consul_server_true'].index(inventory_hostname) }}"
-   
     - name: verify if consuled is installed & consul version 
       shell: consul -version
       register: consul_version_output

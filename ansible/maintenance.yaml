@@ -1,0 +1,12 @@
+- hosts: _role_jenkins_server
+  remote_user: ubuntu
+  become: yes
+  vars:
+    jenkins_ui_port: 9000
+  tasks:
+    - name:
+      shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+      register: admin_code
+    
+    - debug:
+        msg: Enter the following id for UI login {{admin_code.stdout}}

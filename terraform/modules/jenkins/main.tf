@@ -1,19 +1,10 @@
 resource "aws_instance" "jenkins_server" {
-  ami           = var.ami_id
+  ami           = var.jenkins_server_ami_id
   instance_type = var.jenkins-server-instance-type
   subnet_id =  var.private_subnet_id[0]
   key_name      = var.key_name
   iam_instance_profile = var.iam_instance_profile
   vpc_security_group_ids = [aws_security_group.jenkins.id]
-  # provisioner "file" {
-  #   source     = var.private_key_file_name
-  #   destination = "/home/ubuntu/.ssh/id_rsa"
-  #   connection {   
-  #     host        = self.private_ip
-  #     user        = "ubuntu"
-  #     private_key = file(var.private_key_file_name)      
-  #   }   
-  # }
   user_data   = templatefile("./modules/jenkins/jenkins-server-userdata.tpl", { 
                 server_id = "jenkins-server-1"}
   )
@@ -27,7 +18,7 @@ resource "aws_instance" "jenkins_server" {
 
 resource "aws_instance" "jenkins_node" {
   count = var.jenkins_nodes_number_of_server
-  ami           = var.ami_id
+  ami           = var.jenkins_client_ami_id
   instance_type = var.jenkins-node-instance-type
   subnet_id =  element(var.private_subnet_id, count.index)
   key_name      = var.key_name

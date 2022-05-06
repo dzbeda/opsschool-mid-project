@@ -16,21 +16,6 @@
       include_role:
         name: jenkins-server
 
-    - name: copy private key
-      copy:
-        src: /home/ubuntu/mid-project/terraform/mid-project-key.pem
-        dest: /home/ubuntu/.ssh/id_rsa
-        owner: ubuntu
-        group: ubuntu
-        mode: '0400'
-
-    - name: create public key
-      copy:
-        src: /home/ubuntu/.ssh/authorized_keys
-        dest: /home/ubuntu/.ssh/id_rsa.pub
-        owner: ubuntu
-        group: ubuntu
-        remote_src: yes
 
     - name: Verify jenkins server private ip
       uri:
@@ -62,17 +47,12 @@
         - docker-workflow:latest
         - docker-plugin:latest
         - configuration-as-code:latest
+        - dockerhub-notification:latest
 
     - name: restart jenkins server 
       service: 
         name: jenkins
         state: restarted
 
-    - name:  # make sure to install the module ansible-galaxy collection install community.general
-      lineinfile:
-         path: /var/lib/jenkins/io.jenkins.plugins.casc.CasCGlobalConfig.xml
-         regexp: '<configurationPath>'
-         line: '  <configurationPath>/var/lib/jenkins/casc.yaml</configurationPath>'
-
-    - name: restart jenkins
-      shell: java -jar /home/ubuntu/jenkins-cli.jar -auth admin:{{admin_code.stdout}} -s http://{{ jenkins_private_ip.content }}:{{ jenkins_ui_port }} -webSocket restart
+    # - name: restart jenkins
+    #   shell: java -jar /home/ubuntu/jenkins-cli.jar -auth admin:{{admin_code.stdout}} -s http://{{ jenkins_private_ip.content }}:{{ jenkins_ui_port }} -webSocket restart

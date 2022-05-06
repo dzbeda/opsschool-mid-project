@@ -47,18 +47,15 @@
   copy:
     src: consul.service
     dest: /etc/systemd/system/
-  when: 'consul_version not in consul_version_output.stdout'
 
 - name: Reload service
   systemd:
     daemon_reload: yes
-  when: 'consul_version not in consul_version_output.stdout'
 
 - name: Enable consul service
   service:
     name: consul
     enabled: yes
-  when: 'consul_version not in consul_version_output.stdout'
 
 - name: Restart consul service
   service:
