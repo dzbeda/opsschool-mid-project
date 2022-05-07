@@ -59,7 +59,7 @@ module "consul-server"{
 }
 module "jenkins"{
      source = "./modules/jenkins"
-     jenkins_server_ami_id = "ami-0e8e33e291ad9f440"
+     jenkins_server_ami_id = "ami-0ba4981d6e2ad7b70"
      jenkins_client_ami_id = "ami-0e472ba40eb589f49"
      jenkins_nodes_number_of_server = 2
      jenkins-server-instance-type = var.jenkins-server-instance-type
@@ -98,9 +98,26 @@ resource "null_resource" "copy_private_key" {
     command = "./create_private.sh"
   }
 }
-resource "null_resource" "Update_ansible_cfg" {
+resource "null_resource" "update_ansible_cfg" {
   depends_on = [module.bastion-server]
   provisioner "local-exec" {
     command = "sed -i -r 's/(\\b[0-9]{1,3}\\.){3}[0-9]{1,3}\\b'/${module.bastion-server.bastion-server-public-ip}/ ../ansible/ansible.cfg"
+  }
+}
+# resource "null_resource" "copy_ansible_cfg" {
+#   depends_on = [null_resource.update_ansible_cfg]
+#   provisioner "local-exec" {
+#     command = "cp ../ansible/ansible.cfg ./"
+#   }
+# }
+resource "null_resource" "run_ansible1" {
+  depends_on = [module.bastion-server,module.jenkins,module.consul-server,null_resource.update_ansible_cfg]
+  provisioner "local-exec" {
+    command = "ansible-playbook -i ../ansible/aws_ec2.yml ../ansible/mid-project-installation.yaml"
+    environment = {
+
+      ANSIBLE_CONFIG = "../ansible/ansible.cfg"
+
+    }
   }
 }

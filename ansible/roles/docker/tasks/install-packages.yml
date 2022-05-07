@@ -66,6 +66,11 @@
     state: latest
   when: ansible_os_family == "RedHat"
 
+- name: adding user to docker group
+  user:
+    name: ubuntu
+    group: docker
+
 - name: service restart
   service:
     name: docker
