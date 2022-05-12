@@ -3,6 +3,8 @@
   become: yes
   vars:
     jenkins_ui_port: 9000
+    webhook_key: "6be78799-a6ff-4649-aba2-3dddfcd37d17"
+    webhook_secret: "Lwo0NQFAtO15"
   tasks:
 
     - name: Install consul agent
@@ -56,3 +58,9 @@
 
     # - name: restart jenkins
     #   shell: java -jar /home/ubuntu/jenkins-cli.jar -auth admin:{{admin_code.stdout}} -s http://{{ jenkins_private_ip.content }}:{{ jenkins_ui_port }} -webSocket restart
+
+    # - name: create webhook file
+    #   copy:
+    #     dest: /opt/webhook-client.sh
+    #     content: |
+    #       relay login -k{{ webhook_key }} -s {{ webhook_secret }}

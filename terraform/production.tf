@@ -59,7 +59,7 @@ module "consul-server"{
 }
 module "jenkins"{
      source = "./modules/jenkins"
-     jenkins_server_ami_id = "ami-0ba4981d6e2ad7b70"
+     jenkins_server_ami_id = "ami-058f1ee9ca5883fec"
      jenkins_client_ami_id = "ami-0e472ba40eb589f49"
      jenkins_nodes_number_of_server = 2
      jenkins-server-instance-type = var.jenkins-server-instance-type
@@ -82,42 +82,28 @@ module "eks-cluster"{
   project_name = var.project_name
 }
 
-resource "time_sleep" "wait_90_seconds" {
+resource "time_sleep" "wait_60_seconds" {
   depends_on = [module.eks-cluster]
-  create_duration = "90s"
+  create_duration = "60s"
 }
 resource "null_resource" "update_kubectl_configuration" {
-  depends_on = [time_sleep.wait_90_seconds]
+  depends_on = [time_sleep.wait_60_seconds]
   provisioner "local-exec" {
     command = "aws eks update-kubeconfig --region ${var.aws_region} --name ${var.eks_cluster_name}"
   }
 }
-resource "null_resource" "copy_private_key" {
-  depends_on = [module.bastion-server]
+resource "null_resource" "ansible_configuration" {
+  depends_on = [time_sleep.wait_60_seconds]
   provisioner "local-exec" {
     command = "./create_private.sh"
   }
-}
-resource "null_resource" "update_ansible_cfg" {
-  depends_on = [module.bastion-server]
   provisioner "local-exec" {
     command = "sed -i -r 's/(\\b[0-9]{1,3}\\.){3}[0-9]{1,3}\\b'/${module.bastion-server.bastion-server-public-ip}/ ../ansible/ansible.cfg"
   }
-}
-# resource "null_resource" "copy_ansible_cfg" {
-#   depends_on = [null_resource.update_ansible_cfg]
-#   provisioner "local-exec" {
-#     command = "cp ../ansible/ansible.cfg ./"
-#   }
-# }
-resource "null_resource" "run_ansible1" {
-  depends_on = [module.bastion-server,module.jenkins,module.consul-server,null_resource.update_ansible_cfg]
   provisioner "local-exec" {
     command = "ansible-playbook -i ../ansible/aws_ec2.yml ../ansible/mid-project-installation.yaml"
     environment = {
-
       ANSIBLE_CONFIG = "../ansible/ansible.cfg"
-
     }
   }
 }
