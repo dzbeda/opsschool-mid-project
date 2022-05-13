@@ -1,14 +1,22 @@
 ## Prerequisites ##
 1. Linux based server with the follwoing packages 
-2. Ansible - how to install ?
-    1. 
-3. Terraform - How to install ?
+2. Install python3 - How to install ?
+    1. sudo apt-get install -y python3
+    2. sudo apt-get install -y python3-pip
+    3. pip3 install boto3
+3. Ansible - how to install ?
+    1. sudo apt-get install -y ansible
+    2. ansible-galaxy collection install amazon.aws
+4. Terraform - How to install ?
     1.  
-4. Git installation - How to install ?
-    1.  
-4. AWScli installation - How to install ?
-    1. 
-5. Update AWS credentials as Environment variables - Run the follwoing command
+5. Git installation - How to install ?
+    1.  sudo apt-get install -y git
+6. AWScli installation - How to install ?
+    1. sudo apt-get install -y awscli
+7. Supported packages - How to install ?
+    1. sudo apt-get install -y unzip
+    2. sudo apt-get install -y openjdk-11-jdk
+8. Update AWS credentials as Environment variables - Run the follwoing command
     1. export AWS_ACCESS_KEY_ID=XXXX
     2. export AWS_SECRET_ACCESS_KEY=XXXX 
 

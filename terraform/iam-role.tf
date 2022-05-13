@@ -47,6 +47,11 @@ resource "aws_iam_policy" "ec2-policy" {
             "Resource": "*"
         },
         {
+            "Action": "eks:*",
+            "Effect": "Allow",
+            "Resource": "*"
+        },
+        {
             "Effect": "Allow",
             "Action": "iam:CreateServiceLinkedRole",
             "Resource": "*",
