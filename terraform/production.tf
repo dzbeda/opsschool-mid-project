@@ -41,6 +41,7 @@ module "bastion-server"{
      project_name = var.project_name
      vpc_id = module.vpc.vpcid
      key_name  = aws_key_pair.mid_project_key.key_name
+     ssh_enable_ip = var.bastion_enable_ip_for_ssh
 }
 
 module "consul-server"{

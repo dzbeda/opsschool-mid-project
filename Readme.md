@@ -19,6 +19,7 @@
 8. Update AWS credentials as Environment variables - Run the follwoing command
     1. export AWS_ACCESS_KEY_ID=XXXX
     2. export AWS_SECRET_ACCESS_KEY=XXXX 
+9. Cretae S3 bucket - This is required in order to save the TFstate file of Terraform
 
 
 ## Mid-project installation steps ##
@@ -30,10 +31,10 @@
     1. Git clone https://github.com/dzbeda/opsschool-mid-project.git
 3. Move to the terraform folder - run the following commands 
     1. cd terraform 
-4. Update relevant parameters in terraform.tfvars
-    1. Instances type
-    2. AMI 
-    3. AWS-Region 
+4. Update relevant parameters under terraform.tfvars file
+    1. AWS-Region
+    2. Instances type
+    3. Ip address of the machine from which you are running TF (bastion_enable_ip_for_ssh)
     4. ETC
 5. Run terraform plan - run the following commands 
     1. terraform plan –out project 
