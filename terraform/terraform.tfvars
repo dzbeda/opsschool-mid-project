@@ -13,3 +13,4 @@ jenkins-node-instance-type = "t2.micro"
 jenkins-server-instance-type = "t2.micro"
 eks_cluster_name = "mid-project-eks-cluster"
 create_ansible_server = false
+bastion_enable_ip_for_ssh = "3.239.33.162/32"

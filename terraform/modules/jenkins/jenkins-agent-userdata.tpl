@@ -1,3 +1,3 @@
 #! /bin/bash
-sudo hostnamectl set-hostname server-${server_id}
+sudo hostnamectl set-hostname ${server_id}
 echo -e "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDyAhHOCBh/lBhui2oZ5iNk5p3Hhryw8QoT7zXSQriuZn4H6kDD2bmBolJHune0EgkqX+NI68BxnrGXmXF3BY0FZHuBu7cjZfvoMVh9i4NBr2YHBfTtrnLkOTxF5awXCAnIYTBvcSydixCcnXDbbAGauSa/+QJQ3JKjvatm52yxF1qdnZsMH2QsXt486ZJtayhpX9/IqZAbx2AZwukEzQ1OizBC83C2aZnK+/7WzMyoRPzaN1OGjIqU/EUnubVdbCTxRACyGnu/tFGB1iJiFF5yHFiM6vEEC1+Z3i/tmNpTPsjG2CakqO26zBvRkn1aHG/eb2iET4Tr2n7JLSBtxwI5 ubuntu@server-jenkins-server-1" >> /home/ubuntu/.ssh/authorized_keys

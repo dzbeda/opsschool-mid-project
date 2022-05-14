@@ -7,3 +7,23 @@
     pkg:
         - openjdk-11-jdk
         - git
+        - awscli
+        - unzip
+
+- name: download kubectl
+  get_url: 
+    url: https://dl.k8s.io/release/v1.23.6/bin/linux/amd64/kubectl
+    dest: /usr/local/bin
+    mode: '0777'
+
+- name: download ekscli
+  get_url: 
+    url: https://github.com/weaveworks/eksctl/releases/download/v0.96.0/eksctl_Linux_amd64.tar.gz
+    dest: /tmp
+    mode: '0777'
+
+- name: extract ekis
+  unarchive:
+    src: /tmp/eksctl_Linux_amd64.tar.gz
+    dest: /usr/local/bin
+    remote_src: yes

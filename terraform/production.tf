@@ -41,6 +41,7 @@ module "bastion-server"{
      project_name = var.project_name
      vpc_id = module.vpc.vpcid
      key_name  = aws_key_pair.mid_project_key.key_name
+     ssh_enable_ip = var.bastion_enable_ip_for_ssh
 }
 
 module "consul-server"{
@@ -82,18 +83,21 @@ module "eks-cluster"{
   project_name = var.project_name
 }
 
-resource "time_sleep" "wait_60_seconds" {
+resource "time_sleep" "wait_45_seconds" {
   depends_on = [module.eks-cluster]
-  create_duration = "60s"
+  create_duration = "45s"
 }
 resource "null_resource" "update_kubectl_configuration" {
-  depends_on = [time_sleep.wait_60_seconds]
+  depends_on = [time_sleep.wait_45_seconds]
   provisioner "local-exec" {
     command = "aws eks update-kubeconfig --region ${var.aws_region} --name ${var.eks_cluster_name}"
   }
+  provisioner "local-exec" {
+    command = "kubectl create secret generic kandula-secret --from-literal=AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID --from-literal=AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY"
+  }
 }
 resource "null_resource" "ansible_configuration" {
-  depends_on = [time_sleep.wait_60_seconds]
+  depends_on = [time_sleep.wait_45_seconds]
   provisioner "local-exec" {
     command = "./create_private.sh"
   }
@@ -104,6 +108,8 @@ resource "null_resource" "ansible_configuration" {
     command = "ansible-playbook -i ../ansible/aws_ec2.yml ../ansible/mid-project-installation.yaml"
     environment = {
       ANSIBLE_CONFIG = "../ansible/ansible.cfg"
+      AWS_REGION = var.aws_region
+      EKS_CLUSTER_NAME = var.eks_cluster_name
     }
   }
 }

@@ -38,3 +38,4 @@ locals {
   k8s_service_account_namespace = "default"
   k8s_service_account_name      = "opsschool-sa"
 }
+variable "bastion_enable_ip_for_ssh" {}
