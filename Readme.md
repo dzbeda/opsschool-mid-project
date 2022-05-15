@@ -1,5 +1,8 @@
+# The Kandula project #
+  OpsSchool - Mid project 
 
-#### Mid-project installation ####
+
+## Mid-project installation ##
 The project execution is divided into 3 main steps
 
 1. Prerequisites
@@ -11,13 +14,13 @@ There are 2 options to install the execution server
 1. Automatic installation
 2. Manual installation 
 
-## Prerequisites ##
+### Prerequisites ###
 1. Linux based server
 2. Cretae S3 bucket - This is required in order to save the TFstate file of Terraform
 
-## Execution server installation ##
+#### Execution server installation ####
 
-# Automatic Installation #
+##### Automatic Installation ######
 
 1. Download the execution-server-setup.sh
 2. update file permission - Run the following command
@@ -29,7 +32,7 @@ There are 2 options to install the execution server
     2. export AWS_SECRET_ACCESS_KEY=XXXX 
 
 
-# Manual installation #
+##### Manual installation #####
 
 1. Install python3 - How to install ? Run the following command
     1. sudo apt-get install -y python3
@@ -56,7 +59,7 @@ There are 2 options to install the execution server
     1. Git clone https://github.com/dzbeda/opsschool-mid-project.git mid-project
 
 
-## Kandula project execution ##
+### Kandula project execution ###
 
 1. Update AWS credentials as Environment variables - Run the following command
     1. export AWS_ACCESS_KEY_ID=XXXX
