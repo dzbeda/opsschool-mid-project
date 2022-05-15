@@ -3,6 +3,7 @@ sudo apt-get update
 ## Install python and packages
 sudo apt-get install -y python3
 sudo apt-get install -y python3-pip
+sudo apt-get install python-boto3
 sudo pip3 install boto3
 sudo pip3 install --upgrade awscli
 ## Install ansible and supported packages
