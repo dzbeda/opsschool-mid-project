@@ -27,9 +27,6 @@ There are 2 options to install the execution server
     1. chmod 777 execution-server-setup.sh
 3. Run the script - Run the following command
     1. ./execution-server-setup.sh
-4. Update AWS credentials as Environment variables - Run the following command
-    1. export AWS_ACCESS_KEY_ID=XXXX
-    2. export AWS_SECRET_ACCESS_KEY=XXXX 
 
 
 #### Manual installation ####
@@ -57,6 +54,7 @@ There are 2 options to install the execution server
     2. cd mid-project
 8. Clone the repo - run the following commands 
     1. Git clone https://github.com/dzbeda/opsschool-mid-project.git mid-project
+9. Update "/etc/ssh/ssh_config" file with teh follwoing "StrictHostKeyChecking no"
 
 
 ### Kandula project execution ###
@@ -72,8 +70,10 @@ There are 2 options to install the execution server
     2. AWS-Region
     3. Instances type
     4. ETC
-4. Run terraform plan - run the following commands 
-    1. terraform plan –out project ; If everything passed move to the next step
-5. Apply terraform plan - run the following commands    
+4. Intilize Terraform -  run the following commands 
+    1. terraform init ; If everything passed move to the next step
+5. Verify the project plan - run the following commands 
+    1. terraform plan -out project ; If everything passed move to the next step (Please note that sometimes copy-paste update the "-" character)
+5. Apply terraform plan - run the following commands  (Please note that sometimes copy-paste update the "-" character)   
     1. terraform apply project 
 6. Cross your fingers and hope for the good
