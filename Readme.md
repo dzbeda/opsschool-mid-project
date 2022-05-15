@@ -1,5 +1,5 @@
 
-### Mid-project installation ###
+#### Mid-project installation ####
 The project execution is divided into 3 main steps
 
 1. Prerequisites
