@@ -18,9 +18,9 @@ There are 2 options to install the execution server
 1. Linux based server
 2. Cretae S3 bucket - This is required in order to save the TFstate file of Terraform
 
-#### Execution server installation ####
+### Execution server installation ###
 
-##### Automatic Installation ######
+#### Automatic Installation ####
 
 1. Download the execution-server-setup.sh
 2. update file permission - Run the following command
@@ -32,7 +32,7 @@ There are 2 options to install the execution server
     2. export AWS_SECRET_ACCESS_KEY=XXXX 
 
 
-##### Manual installation #####
+#### Manual installation ####
 
 1. Install python3 - How to install ? Run the following command
     1. sudo apt-get install -y python3
