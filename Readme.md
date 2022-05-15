@@ -60,16 +60,15 @@ There are 2 options to install the execution server
 
 
 ### Kandula project execution ###
-> :warning:1. Update AWS credentials as Environment variables - Run the following command \
+1. **Update AWS credentials as Environment variables - Run the following command**
      1. export AWS_ACCESS_KEY_ID=XXXX
-     2. 
-     3. export AWS_SECRET_ACCESS_KEY=XXXX 
+     2. export AWS_SECRET_ACCESS_KEY=XXXX 
 2. Move to the terraform folder - run the following commands 
     1. cd mid-project
     2. cd terraform 
 3. Update the S3 bucket name in "provider.tf" file under "backend "s3" --> bucket" section
-> :warning:4. Update relevant parameters in "terraform.tfvars" file
-    1. Ip address of the machine from which you are running TF (bastion_enable_ip_for_ssh)
+4. Update relevant parameters in "terraform.tfvars" file
+    1. **Ip address of the machine from which you are running TF (bastion_enable_ip_for_ssh)**
     2. AWS-Region
     3. Instances type
     4. ETC
