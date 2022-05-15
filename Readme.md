@@ -35,6 +35,7 @@ There are 2 options to install the execution server
     1. sudo apt-get install -y python3
     2. sudo apt-get install -y python3-pip
     3. sudo pip3 install boto3
+    4. sudo apt-get install python-boto3
 2. Ansible - how to install ? Run the following command
     1. sudo apt-get install -y ansible
     2. ansible-galaxy collection install amazon.aws
