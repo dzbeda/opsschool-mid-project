@@ -54,7 +54,14 @@ There are 2 options to install the execution server
     2. cd mid-project
 8. Clone the repo - run the following commands 
     1. Git clone https://github.com/dzbeda/opsschool-mid-project.git mid-project
-9. Update "/etc/ssh/ssh_config" file with teh follwoing "StrictHostKeyChecking no"
+9. Install kubectl - How to install ? Run the following command  ; Cuurenlt version 123.6 is being installed since version 1.24 have a bug
+    1. curl -LO https://dl.k8s.io/release/v1.23.6/bin/linux/amd64/kubectl
+    2. chmod +x kubectl
+    3. sudo mv ./kubectl /usr/local/bin
+10. Install ekscli - How to install ? Run the following command
+    1. curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+    2. sudo mv /tmp/eksctl /usr/local/bin
+11. Update "/etc/ssh/ssh_config" file with teh follwoing "StrictHostKeyChecking no"
 
 
 ### Kandula project execution ###
