@@ -60,7 +60,7 @@ There are 2 options to install the execution server
 
 
 ### Kandula project execution ###
-> :warning:1. Update AWS credentials as Environment variables - Run the following command
+> :warning:1. Update AWS credentials as Environment variables - Run the following command \
                1. export AWS_ACCESS_KEY_ID=XXXX
                2. export AWS_SECRET_ACCESS_KEY=XXXX 
 2. Move to the terraform folder - run the following commands 
