@@ -25,3 +25,10 @@ git clone https://github.com/dzbeda/opsschool-mid-project.git mid-project
 sudo chmod o+w /etc/ssh/ssh_config
 sudo echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config
 sudo chmod o-w /etc/ssh/ssh_config
+## Install kubectl
+curl -LO https://dl.k8s.io/release/v1.23.6/bin/linux/amd64/kubectl
+chmod +x kubectl
+sudo mv ./kubectl /usr/local/bin
+## Install ekscli
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin
