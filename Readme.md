@@ -1,6 +1,6 @@
 
 ### Mid-project installation ###
-The execution is dived into 3 main steps
+The project execution is divided into 3 main steps
 
 1. Prerequisites
 2. Execution server installation  
