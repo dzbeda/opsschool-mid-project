@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /bin/bash
 sudo apt-get update
 ## Install python and packages
 sudo apt-get install -y python3
