@@ -21,3 +21,7 @@ sudo apt-get install -y openjdk-11-jdk
 mkdir mid-project
 # Clone project 
 git clone https://github.com/dzbeda/opsschool-mid-project.git mid-project
+## Update SSH configuartion 
+sudo chmod o+w /etc/ssh/ssh_config
+sudo echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config
+sudo chmod o-w /etc/ssh/ssh_config
