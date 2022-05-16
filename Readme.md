@@ -31,38 +31,39 @@ There are 2 options to install the execution server
 
 #### Manual installation ####
 
-1. Install python3 - How to install ? Run the following command
+1. Update index repo - How to install ? Run the following command
+    1. sudo apt-get update
+2. Install supported packages - How to install ? Run the following command
     1. sudo apt-get install -y python3
-    2. sudo apt-get install -y python3-pip
-    3. sudo pip3 install boto3
-    4. sudo apt-get install python-boto3
-2. Ansible - how to install ? Run the following command
-    1. sudo apt-get install -y ansible
+    2. udo apt-get install -y python3
+    3. sudo apt-get install -y python3-pip
+    4. sudo apt-get install -y awscli
+    5. sudo apt-get install -y git
+    6. sudo apt-get install -y unzip
+    7. sudo apt-get install -y openjdk-11-jdk
+    8. pip3 install boto3
+    9. pip3 install --upgrade awscli
+3. Install Ansible - how to install ? Run the following command
+    1. sudo pip3 install ansible
     2. ansible-galaxy collection install amazon.aws
-3. Terraform - How to install ? Run the following command
+4. Terraform - How to install ? Run the following command
     1.  curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
     2. sudo apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
     3. sudo apt install terraform
-4. Git installation - How to install ? Run the following command
-    1.  sudo apt-get install -y git
-5. AWScli installation - How to install ? Run the following command
-    1. sudo apt-get install -y awscli
-6. Supported packages - How to install ? Run the following command
-    1. sudo apt-get install -y unzip
-    2. sudo apt-get install -y openjdk-11-jdk
-7. Open a new folder named “mid-project”  - run the following commands 
-    1. mkdir mid-project
-    2. cd mid-project
-8. Clone the repo - run the following commands 
-    1. Git clone https://github.com/dzbeda/opsschool-mid-project.git mid-project
-9. Install kubectl - How to install ? Run the following command  ; Cuurenlt version 123.6 is being installed since version 1.24 have a bug
+5. Install kubectl - How to install ? Run the following command  ; Cuurenlt version 123.6 is being installed since version 1.24 have a bug
     1. curl -LO https://dl.k8s.io/release/v1.23.6/bin/linux/amd64/kubectl
     2. chmod +x kubectl
     3. sudo mv ./kubectl /usr/local/bin
-10. Install ekscli - How to install ? Run the following command
+6. Install ekscli - How to install ? Run the following command
     1. curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
     2. sudo mv /tmp/eksctl /usr/local/bin
-11. Update "/etc/ssh/ssh_config" file with teh follwoing "StrictHostKeyChecking no"
+7. Update "/etc/ssh/ssh_config" file with the follwoing "StrictHostKeyChecking no"
+8. Clone repo - How to install ? Run the following command
+    1. Open a new folder named “mid-project”  - run the following commands 
+      1. mkdir mid-project
+    2. cd mid-project
+    3. Clone the repo - run the following commands 
+      1. Git clone https://github.com/dzbeda/opsschool-mid-project.git mid-project
 
 
 ### Kandula project execution ###
