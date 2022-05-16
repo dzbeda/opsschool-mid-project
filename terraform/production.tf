@@ -60,7 +60,7 @@ module "consul-server"{
 }
 module "jenkins"{
      source = "./modules/jenkins"
-     jenkins_server_ami_id = "ami-058f1ee9ca5883fec"
+     jenkins_server_ami_id = "ami-02d20a09c983588c2"
      jenkins_client_ami_id = "ami-0e472ba40eb589f49"
      jenkins_nodes_number_of_server = 2
      jenkins-server-instance-type = var.jenkins-server-instance-type
@@ -83,12 +83,12 @@ module "eks-cluster"{
   project_name = var.project_name
 }
 
-resource "time_sleep" "wait_45_seconds" {
+resource "time_sleep" "wait_60_seconds" {
   depends_on = [module.eks-cluster]
-  create_duration = "45s"
+  create_duration = "60s"
 }
 resource "null_resource" "update_kubectl_configuration" {
-  depends_on = [time_sleep.wait_45_seconds]
+  depends_on = [time_sleep.wait_60_seconds]
   provisioner "local-exec" {
     command = "aws eks update-kubeconfig --region ${var.aws_region} --name ${var.eks_cluster_name}"
   }
@@ -97,7 +97,7 @@ resource "null_resource" "update_kubectl_configuration" {
   }
 }
 resource "null_resource" "ansible_configuration" {
-  depends_on = [time_sleep.wait_45_seconds]
+  depends_on = [time_sleep.wait_60_seconds]
   provisioner "local-exec" {
     command = "./create_private.sh"
   }
