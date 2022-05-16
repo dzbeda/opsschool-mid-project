@@ -7,7 +7,7 @@ The project execution is divided into 3 main steps
 
 1. Prerequisites
 2. Execution server installation  
-3. Kandul project execution  
+3. Kandula project execution  
 
 
 There are 2 options to install the execution server 
@@ -15,8 +15,8 @@ There are 2 options to install the execution server
 2. Manual installation 
 
 ### Prerequisites ###
-1. Linux based server
-2. Cretae S3 bucket - This is required in order to save the TFstate file of Terraform
+1. Linux based server -  Ubuntu distribution
+2. Create S3 bucket - This is required in order to save the TFstate file of Terraform
 
 ### Execution server installation ###
 
