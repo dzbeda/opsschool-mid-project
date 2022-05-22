@@ -1,4 +1,5 @@
 #! /bin/bash
+set -e
 ## Update apt index
 sudo apt-get update
 ## Install supported packages
