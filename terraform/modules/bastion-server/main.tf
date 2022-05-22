@@ -33,3 +33,13 @@ resource "aws_security_group" "bastion_server" {
     env = var.tag_enviroment
   }
 }
+
+resource "null_resource" "ansible_configuration" {
+  depends_on = [aws_instance.bastion_server]
+  provisioner "local-exec" {
+    command = "./create_private.sh"
+  }
+  provisioner "local-exec" {
+    command = "sed -i -r 's/(\\b[0-9]{1,3}\\.){3}[0-9]{1,3}\\b'/${aws_instance.bastion_server.public_ip}/ ../ansible/ansible.cfg"
+  }
+}

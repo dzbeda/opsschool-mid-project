@@ -45,6 +45,7 @@ module "bastion-server"{
 }
 
 module "consul-server"{
+     depends_on = [module.bastion-server]
      consul_number_of_server = var.create-consul-server ? var.number-of-consul-servers : 0
      source = "./modules/consul-server"
      ami_id = "ami-00ddb0e5626798373"
@@ -59,6 +60,7 @@ module "consul-server"{
      alb1_security_group_id = module.network.alb1-security-group-id
 }
 module "jenkins"{
+     depends_on = [time_sleep.wait_60_seconds]
      source = "./modules/jenkins"
      jenkins_server_ami_id = "ami-02d20a09c983588c2"
      jenkins_client_ami_id = "ami-0e472ba40eb589f49"
@@ -74,6 +76,8 @@ module "jenkins"{
      private_key_file_name = var.private_key_file_name
      iam_instance_profile   = aws_iam_instance_profile.ec2-role.name
      alb1_security_group_id = module.network.alb1-security-group-id
+     aws_region = var.aws_region
+     eks_cluster_name = var.eks_cluster_name
 }
 module "eks-cluster"{
   source = "./modules/eks-cluster"
@@ -97,20 +101,20 @@ resource "null_resource" "update_kubectl_configuration" {
     command = "kubectl create secret generic kandula-secret --from-literal=AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID --from-literal=AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY"
   }
 }
-resource "null_resource" "ansible_configuration" {
-  depends_on = [time_sleep.wait_60_seconds]
-  provisioner "local-exec" {
-    command = "./create_private.sh"
-  }
-  provisioner "local-exec" {
-    command = "sed -i -r 's/(\\b[0-9]{1,3}\\.){3}[0-9]{1,3}\\b'/${module.bastion-server.bastion-server-public-ip}/ ../ansible/ansible.cfg"
-  }
-  provisioner "local-exec" {
-    command = "ansible-playbook -i ../ansible/aws_ec2.yml ../ansible/mid-project-installation.yaml"
-    environment = {
-      ANSIBLE_CONFIG = "../ansible/ansible.cfg"
-      AWS_REGION = var.aws_region
-      EKS_CLUSTER_NAME = var.eks_cluster_name
-    }
-  }
-}
+# resource "null_resource" "ansible_configuration" {
+#   depends_on = [time_sleep.wait_60_seconds]
+#   provisioner "local-exec" {
+#     command = "./create_private.sh"
+#   }
+#   provisioner "local-exec" {
+#     command = "sed -i -r 's/(\\b[0-9]{1,3}\\.){3}[0-9]{1,3}\\b'/${module.bastion-server.bastion-server-public-ip}/ ../ansible/ansible.cfg"
+#   }
+#   provisioner "local-exec" {
+#     command = "ansible-playbook -i ../ansible/aws_ec2.yml ../ansible/mid-project-installation.yaml"
+#     environment = {
+#       ANSIBLE_CONFIG = "../ansible/ansible.cfg"
+#       AWS_REGION = var.aws_region
+#       EKS_CLUSTER_NAME = var.eks_cluster_name
+#     }
+#   }
+# }

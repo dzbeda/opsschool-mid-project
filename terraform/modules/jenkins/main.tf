@@ -100,3 +100,32 @@ resource "aws_alb_target_group_attachment" "jenkins-server" {
   target_id        = aws_instance.jenkins_server.*.id[count.index]
   port             = 9000
 }
+resource "time_sleep" "wait_for_jenkins_server_run_status" {
+  depends_on = [aws_instance.jenkins_server]
+  create_duration = "45s"
+}
+
+resource "null_resource" "ansible_jenkins_server" {
+  depends_on = [time_sleep.wait_for_jenkins_server_run_status]
+  provisioner "local-exec" {
+    command = "ansible-playbook -i ../ansible/aws_ec2.yml ../ansible/install-jenkins-server.yml"
+    environment = {
+      ANSIBLE_CONFIG = "../ansible/ansible.cfg"
+    }
+  }
+}
+resource "time_sleep" "wait_for_jenkins_node_run_status" {
+  depends_on = [aws_instance.jenkins_node]
+  create_duration = "45s"
+}
+resource "null_resource" "ansible_jenkins_node" {
+  depends_on = [time_sleep.wait_for_jenkins_node_run_status]
+  provisioner "local-exec" {
+    command = "ansible-playbook -i ../ansible/aws_ec2.yml ../ansible/install-jenkins-node.yml"
+    environment = {
+      ANSIBLE_CONFIG = "../ansible/ansible.cfg"
+      AWS_REGION = var.aws_region
+      EKS_CLUSTER_NAME = var.eks_cluster_name
+    }
+  }
+}
