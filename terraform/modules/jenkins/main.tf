@@ -1,4 +1,5 @@
 resource "aws_instance" "jenkins_server" {
+  count = var.jenkins_master_number_of_servers
   ami           = var.jenkins_server_ami_id
   instance_type = var.jenkins-server-instance-type
   subnet_id =  var.private_subnet_id[0]

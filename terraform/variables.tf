@@ -25,8 +25,13 @@ variable "public-subnet-block" {
 }
 variable "availability_zone" {}
 variable "private_key_file_name" {}
+variable "create-consul-server" {}
 variable "consul-instance-type" {}
+variable "number-of-consul-servers" {}
+variable "number-of-jenkins-nodes" {}
+variable "create-jenkins-node" {}
 variable "jenkins-node-instance-type" {}
+variable "create-jenkins-master" {}
 variable "jenkins-server-instance-type" {}
 variable "create_ansible_server" {}
 variable "bastion_server_instance-type" {
@@ -39,3 +44,5 @@ locals {
   k8s_service_account_name      = "opsschool-sa"
 }
 variable "bastion_enable_ip_for_ssh" {}
+
+
