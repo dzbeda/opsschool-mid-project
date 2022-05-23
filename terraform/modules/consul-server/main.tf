@@ -89,3 +89,16 @@ resource "aws_alb_target_group_attachment" "consul-server" {
   target_id        = aws_instance.consul_server.*.id[count.index]
   port             = 8500
 }
+resource "time_sleep" "wait_for_consul_run_status" {
+  depends_on = [aws_instance.consul_server]
+  create_duration = "45s"
+}
+resource "null_resource" "ansible_consul" {
+  depends_on = [time_sleep.wait_for_consul_run_status]
+  provisioner "local-exec" {
+    command = "ansible-playbook -i ../ansible/aws_ec2.yml ../ansible/install-consul-server.yml"
+    environment = {
+      ANSIBLE_CONFIG = "../ansible/ansible.cfg"
+    }
+  }
+}
