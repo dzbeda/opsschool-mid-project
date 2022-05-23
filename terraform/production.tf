@@ -45,7 +45,7 @@ module "bastion-server"{
 }
 
 module "consul-server"{
-     consul_number_of_server = 3
+     consul_number_of_server = var.create-consul-server ? var.number-of-consul-servers : 0
      source = "./modules/consul-server"
      ami_id = "ami-00ddb0e5626798373"
      instance_type = var.consul-instance-type
@@ -62,7 +62,8 @@ module "jenkins"{
      source = "./modules/jenkins"
      jenkins_server_ami_id = "ami-02d20a09c983588c2"
      jenkins_client_ami_id = "ami-0e472ba40eb589f49"
-     jenkins_nodes_number_of_server = 2
+     jenkins_master_number_of_servers = var.create-jenkins-master ? 1 : 0
+     jenkins_nodes_number_of_server = var.create-jenkins-node ? var.number-of-jenkins-nodes : 0
      jenkins-server-instance-type = var.jenkins-server-instance-type
      jenkins-node-instance-type = var.jenkins-node-instance-type
      private_subnet_id = module.network.private-subnet-id

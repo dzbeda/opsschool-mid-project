@@ -1,7 +1,8 @@
 resource "aws_instance" "jenkins_server" {
+  count = var.jenkins_master_number_of_servers
   ami           = var.jenkins_server_ami_id
   instance_type = var.jenkins-server-instance-type
-  subnet_id =  var.private_subnet_id[0]
+  subnet_id =  var.private_subnet_id[count.index]
   key_name      = var.key_name
   iam_instance_profile = var.iam_instance_profile
   vpc_security_group_ids = [aws_security_group.jenkins.id]
@@ -94,7 +95,8 @@ resource "aws_alb_target_group" "jenkins-server" {
 }
 
 resource "aws_alb_target_group_attachment" "jenkins-server" {
+  count = var.jenkins_master_number_of_servers
   target_group_arn = aws_alb_target_group.jenkins-server.arn
-  target_id        = aws_instance.jenkins_server.id
+  target_id        = aws_instance.jenkins_server.*.id[count.index]
   port             = 9000
 }
