@@ -86,6 +86,8 @@ module "eks-cluster"{
   eks_cluster_name = var.eks_cluster_name
   tag_enviroment= var.tag_enviroment
   project_name = var.project_name
+  eks_user_role_name = aws_iam_role.ec2-role.name
+  eks_user_role_arn = aws_iam_role.ec2-role.arn
 }
 
 resource "time_sleep" "wait_60_seconds" {

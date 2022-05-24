@@ -3,6 +3,8 @@ variable "subnet_ids" {}
 variable "tag_enviroment" {}
 variable "project_name" {}
 variable "eks_cluster_name" {}
+variable "eks_user_role_name" {}
+variable "eks_user_role_arn" {}
 variable "kubernetes_version" {
   default = 1.21
   description = "kubernetes version"
