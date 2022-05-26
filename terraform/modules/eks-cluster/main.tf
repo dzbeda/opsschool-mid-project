@@ -26,12 +26,21 @@ resource "aws_security_group" "all_worker_mgmt" {
 }
 module "eks" {
   source          = "terraform-aws-modules/eks/aws"
-  version         = "18.6.1"
+  version         = "18.21.0"
   cluster_name    = var.eks_cluster_name
   cluster_version = var.kubernetes_version
   subnet_ids         = var.subnet_ids
 
   enable_irsa = true
+  manage_aws_auth_configmap = true
+
+  aws_auth_roles = [
+    {
+      rolearn  = var.jenkins_role_arn
+      username = var.jenkins_role_name
+      groups   = ["system:masters"]
+    },
+  ]
   
   tags = {
     Name = "eks-cluster-${var.project_name}"
