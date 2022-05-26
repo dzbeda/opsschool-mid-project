@@ -31,12 +31,6 @@ output "eks-oidc_provider_arn" {
 output "cluster_endpoint" {
   value = module.eks-cluster.cluster_endpoint
 }
-output "role-name" {
-    value = aws_iam_role.ec2-role.name
-}
-output "role-arn" {
-    value = aws_iam_role.ec2-role.arn
-}
 
 
 

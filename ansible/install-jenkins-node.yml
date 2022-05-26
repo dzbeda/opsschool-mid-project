@@ -3,8 +3,8 @@
   vars:
     eks_cluster_name: "{{ lookup('env','EKS_CLUSTER_NAME') }}"
     aws_region: "{{ lookup('env','AWS_REGION') }}"
-    aws_access_key_id: "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
-    aws_secret_access_key: "{{ lookup('env','AWS_SECRET_ACCESS_KEY') }}"
+    # aws_access_key_id: "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
+    # aws_secret_access_key: "{{ lookup('env','AWS_SECRET_ACCESS_KEY') }}"
   become: yes
   tasks:
     - name: Install prerequsites for jenkins node
@@ -27,13 +27,13 @@
           service_registration: 
             - jenkins-node
 
-    - name: update aws configuration
-      shell: "aws configure set {{item.command}} {{item.var}}"
-      with_items:
-        - { command: aws_access_key_id , var: "{{aws_access_key_id}}" }
-        - { command: aws_secret_access_key , var: "{{aws_secret_access_key}}" } 
-        - { command: default.region , var: "{{aws_region}}" }
-      become: no
+    # - name: update aws configuration
+    #   shell: "aws configure set {{item.command}} {{item.var}}"
+    #   with_items:
+    #     - { command: aws_access_key_id , var: "{{aws_access_key_id}}" }
+    #     - { command: aws_secret_access_key , var: "{{aws_secret_access_key}}" } 
+    #     - { command: default.region , var: "{{aws_region}}" }
+    #   become: no
 
 
     - name: update kubectl configuration
