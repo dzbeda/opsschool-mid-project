@@ -30,7 +30,7 @@ module "ansible-server"{
      project_name = var.project_name
      vpc_id = module.vpc.vpcid
      key_name  = aws_key_pair.mid_project_key.key_name
-     iam_instance_profile   = aws_iam_instance_profile.ec2-role.name
+     iam_instance_profile   = aws_iam_instance_profile.ansible-role.name
 }
 module "bastion-server"{
      source = "./modules/bastion-server"
@@ -55,7 +55,7 @@ module "consul-server"{
      project_name = var.project_name
      vpc_id = module.vpc.vpcid
      key_name  = aws_key_pair.mid_project_key.key_name
-     iam_instance_profile   = aws_iam_instance_profile.ec2-role.name
+     iam_instance_profile   = aws_iam_instance_profile.consul-role.name
      jenkins_security_group_id = module.jenkins.jenkins-security-group-id
      alb1_security_group_id = module.network.alb1-security-group-id
 }
@@ -74,7 +74,7 @@ module "jenkins"{
      vpc_id = module.vpc.vpcid
      key_name  = aws_key_pair.mid_project_key.key_name
      private_key_file_name = var.private_key_file_name
-     iam_instance_profile   = aws_iam_instance_profile.ec2-role.name
+     iam_instance_profile   = aws_iam_instance_profile.jenkins-role.name
      alb1_security_group_id = module.network.alb1-security-group-id
      aws_region = var.aws_region
      eks_cluster_name = var.eks_cluster_name
@@ -86,6 +86,8 @@ module "eks-cluster"{
   eks_cluster_name = var.eks_cluster_name
   tag_enviroment= var.tag_enviroment
   project_name = var.project_name
+  jenkins_role_name = aws_iam_role.jenkins-role.name
+  jenkins_role_arn = aws_iam_role.jenkins-role.arn
 }
 
 resource "time_sleep" "wait_60_seconds" {
