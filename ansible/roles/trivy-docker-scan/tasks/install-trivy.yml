@@ -1,0 +1,21 @@
+- name: Apt-get update
+  apt:
+    update_cache: yes
+
+- name: install packages
+  apt:
+    pkg:
+        - wget
+        - apt-transport-https
+        - gnupg 
+        - lsb-release
+
+
+- name: download trivy deb
+  get_url:
+    url: https://github.com/aquasecurity/trivy/releases/download/v0.23.0/trivy_{{ trivy_version }}_Linux-64bit.deb
+    dest: /tmp
+
+- name: Install trivy .deb package
+  apt:
+    deb: /tmp/trivy_{{ trivy_version }}_Linux-64bit.deb

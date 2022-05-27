@@ -26,6 +26,12 @@
       vars:
           service_registration: 
             - jenkins-node
+    
+    - name: Install trivy
+      include_role:
+        name: trivy-docker-scan
+      vars:
+        trivy_version: "0.23.0"
 
     # - name: update aws configuration
     #   shell: "aws configure set {{item.command}} {{item.var}}"
@@ -34,7 +40,6 @@
     #     - { command: aws_secret_access_key , var: "{{aws_secret_access_key}}" } 
     #     - { command: default.region , var: "{{aws_region}}" }
     #   become: no
-
 
     - name: update kubectl configuration
       shell: aws eks update-kubeconfig --region {{ aws_region }} --name {{ eks_cluster_name }}
