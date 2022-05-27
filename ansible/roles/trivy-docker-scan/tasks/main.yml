@@ -1,0 +1,3 @@
+---
+# tasks file for trivy-dcker-scan
+- include: install-trivy.yml
