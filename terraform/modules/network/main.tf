@@ -153,6 +153,9 @@ resource "aws_security_group" "alb1_sg" {
 
 resource "aws_route53_zone" "primary_domain" {
   name = var.domain-name
+  lifecycle {
+    prevent_destroy = true
+  }
   tags = {
     Name = "alb1-${var.project_name}"
     enviroment = var.tag_enviroment

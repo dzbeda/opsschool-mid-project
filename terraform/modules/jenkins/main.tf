@@ -102,7 +102,7 @@ resource "aws_alb_target_group_attachment" "jenkins-server" {
 }
 resource "time_sleep" "wait_for_jenkins_server_run_status" {
   depends_on = [aws_instance.jenkins_server]
-  create_duration = "45s"
+  create_duration = "60s"
 }
 
 resource "null_resource" "ansible_jenkins_server" {
@@ -116,7 +116,7 @@ resource "null_resource" "ansible_jenkins_server" {
 }
 resource "time_sleep" "wait_for_jenkins_node_run_status" {
   depends_on = [aws_instance.jenkins_node]
-  create_duration = "45s"
+  create_duration = "60s"
 }
 resource "null_resource" "ansible_jenkins_node" {
   depends_on = [time_sleep.wait_for_jenkins_node_run_status]
