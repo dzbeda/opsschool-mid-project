@@ -30,6 +30,7 @@ module "eks" {
   cluster_name    = var.eks_cluster_name
   cluster_version = var.kubernetes_version
   subnet_ids         = var.subnet_ids
+  #create = true
 
   enable_irsa = true
   manage_aws_auth_configmap = true

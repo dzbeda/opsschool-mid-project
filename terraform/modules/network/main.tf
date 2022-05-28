@@ -150,3 +150,25 @@ resource "aws_security_group" "alb1_sg" {
     env = var.tag_enviroment
   }
 }
+
+resource "aws_route53_zone" "primary_domain" {
+  name = var.domain-name
+  tags = {
+    Name = "alb1-${var.project_name}"
+    enviroment = var.tag_enviroment
+  }
+}
+resource "aws_route53_record" "jenkins_record" {
+  zone_id = aws_route53_zone.primary_domain.zone_id
+  name    = "${var.jenkins-domain-name}.${var.domain-name}"
+  type    = "CNAME"
+  ttl     = "300"
+  records = [aws_alb.alb1.dns_name]
+}
+resource "aws_route53_record" "consul_record" {
+  zone_id = aws_route53_zone.primary_domain.zone_id
+  name    = "${var.consul-domain-name}.${var.domain-name}"
+  type    = "CNAME"
+  ttl     = "300"
+  records = [aws_alb.alb1.dns_name]
+}

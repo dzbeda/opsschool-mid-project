@@ -44,5 +44,8 @@ locals {
   k8s_service_account_name      = "opsschool-sa"
 }
 variable "bastion_enable_ip_for_ssh" {}
+variable "domain-name" {}
+variable "jenkins-domain-name-record-extantion" {}
+variable "consul-domain-name-record-extantion" {}
 
 
