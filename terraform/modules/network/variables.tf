@@ -13,3 +13,6 @@ variable "tag_enviroment" {}
 variable "project_name" {}
 variable "consul_target_group_arn" {}
 variable "jenkins_server_target_group_arn" {}
+variable "domain-name" {}
+variable "jenkins-domain-name" {}
+variable "consul-domain-name" {}

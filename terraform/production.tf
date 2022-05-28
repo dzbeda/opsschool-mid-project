@@ -18,6 +18,9 @@ module "network" {
      project_name = var.project_name
      consul_target_group_arn = module.consul-server.consul-server-target-group-arn
      jenkins_server_target_group_arn = module.jenkins.jenkins-server-target-group-arn
+     domain-name = var.domain-name
+     jenkins-domain-name = var.jenkins-domain-name-record-extantion
+     consul-domain-name = var.consul-domain-name-record-extantion
 
 }
 module "ansible-server"{

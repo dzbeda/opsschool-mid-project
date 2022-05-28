@@ -16,8 +16,14 @@ output "ansible-server-private-ip"{
 output "consul-server-private-ip" {
     value = module.consul-server.consul-server-private-ip
 }
+output "consul-server-dns-name" {
+    value = module.network.consul-server-dns-name
+}
 output "jenkins-server-private-ip" {
     value = module.jenkins.jenkins-server-private-ip
+}
+output "jenkins-server-dns-name" {
+    value = module.network.jenkins-server-dns-name
 }
 output "jenkins-nodes-private-ip" {
     value = module.jenkins.jenkins-nodes-private-ip
@@ -31,6 +37,12 @@ output "eks-oidc_provider_arn" {
 output "cluster_endpoint" {
   value = module.eks-cluster.cluster_endpoint
 }
+output "hosted-zone-name-server" {
+    value = module.network.hosted-zone-name-server
+}
+
+
+
 
 
 
