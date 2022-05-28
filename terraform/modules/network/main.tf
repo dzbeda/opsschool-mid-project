@@ -110,9 +110,11 @@ resource "aws_alb_listener" "consul" {
 }
 
 resource "aws_alb_listener" "jenkins" {
+  depends_on = [time_sleep.wait_for_certificate_verification]
   load_balancer_arn = aws_alb.alb1.arn
-  port              = "9000"
-  protocol          = "HTTP"
+  certificate_arn = aws_acm_certificate.zbeda_site.arn
+  port              = "443"
+  protocol          = "HTTPS"
 
   default_action {
     type             = "forward"
@@ -132,12 +134,19 @@ resource "aws_security_group" "alb1_sg" {
     cidr_blocks = ["0.0.0.0/0"]
     description = "Allow consul UI access"
   }
+  # ingress {
+  #   from_port = 9000
+  #   to_port =  9000
+  #   protocol = "tcp"
+  #   cidr_blocks = ["0.0.0.0/0"]
+  #   description = "Allow jenkins UI access"
+  # }
   ingress {
-    from_port = 9000
-    to_port =  9000
+    from_port = 443
+    to_port =  443
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-    description = "Allow jenkins UI access"
+    description = "Allow jenkins UI secure access"
   }
   egress {
     from_port        = 0
@@ -151,6 +160,7 @@ resource "aws_security_group" "alb1_sg" {
   }
 }
 
+## Create Hosted Zone and DNS records 
 resource "aws_route53_zone" "primary_domain" {
   name = var.domain-name
   lifecycle {
@@ -174,4 +184,91 @@ resource "aws_route53_record" "consul_record" {
   type    = "CNAME"
   ttl     = "300"
   records = [aws_alb.alb1.dns_name]
+}
+
+## Create Certificate 
+resource "aws_acm_certificate" "zbeda_site" {
+  domain_name       = var.domain-name
+  subject_alternative_names = ["*.${var.domain-name}"]
+  validation_method = "DNS"
+
+  tags = {
+    Environment = "test"
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+data "aws_route53_zone" "zbeda_site" {
+  name         = var.domain-name
+  private_zone = false
+}
+
+resource "aws_route53_record" "zbeda_site" {
+  for_each = {
+    for dvo in aws_acm_certificate.zbeda_site.domain_validation_options : dvo.domain_name => {
+      name   = dvo.resource_record_name
+      record = dvo.resource_record_value
+      type   = dvo.resource_record_type
+    }
+  }
+
+  allow_overwrite = true
+  name            = each.value.name
+  records         = [each.value.record]
+  ttl             = 60
+  type            = each.value.type
+  zone_id         = data.aws_route53_zone.zbeda_site.zone_id
+}
+
+resource "aws_acm_certificate_validation" "zbeda_site" {
+  certificate_arn         = aws_acm_certificate.zbeda_site.arn
+  validation_record_fqdns = [for record in aws_route53_record.zbeda_site : record.fqdn]
+}
+
+## Create certificate 
+
+resource "aws_acm_certificate" "zbeda_site" {
+  domain_name       = var.domain-name
+  subject_alternative_names = ["${var.consul-domain-name}.${var.domain-name}" , "${var.jenkins-domain-name}.${var.domain-name}"]
+  validation_method = "DNS"
+
+  tags = {
+    Name = "alb1-sg-${var.project_name}"
+    env = var.tag_enviroment
+  }
+}
+
+
+data "aws_route53_zone" "zbeda_site" {
+  name         = var.domain-name
+  private_zone = false
+}
+
+resource "aws_route53_record" "zbeda_site" {
+  for_each = {
+    for dvo in aws_acm_certificate.zbeda_site.domain_validation_options : dvo.domain_name => {
+      name   = dvo.resource_record_name
+      record = dvo.resource_record_value
+      type   = dvo.resource_record_type
+    }
+  }
+
+  allow_overwrite = true
+  name            = each.value.name
+  records         = [each.value.record]
+  ttl             = 60
+  type            = each.value.type
+  zone_id         = data.aws_route53_zone.zbeda_site.zone_id
+}
+
+resource "aws_acm_certificate_validation" "zbeda_site" {
+  certificate_arn         = aws_acm_certificate.zbeda_site.arn
+  validation_record_fqdns = [for record in aws_route53_record.zbeda_site : record.fqdn]
+}
+resource "time_sleep" "wait_for_certificate_verification" {
+  depends_on = [aws_acm_certificate_validation.zbeda_site]
+  create_duration = "60s"
 }
