@@ -134,13 +134,13 @@ resource "aws_security_group" "alb1_sg" {
     cidr_blocks = ["0.0.0.0/0"]
     description = "Allow consul UI access"
   }
-  # ingress {
-  #   from_port = 9000
-  #   to_port =  9000
-  #   protocol = "tcp"
-  #   cidr_blocks = ["0.0.0.0/0"]
-  #   description = "Allow jenkins UI access"
-  # }
+  ingress {
+    from_port = 9000
+    to_port =  9000
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow jenkins UI access"
+  }
   ingress {
     from_port = 443
     to_port =  443
@@ -196,15 +196,15 @@ resource "aws_acm_certificate" "zbeda_site" {
     Environment = "test"
   }
 
-  lifecycle {
-    create_before_destroy = true
-  }
+  # lifecycle {
+  #   create_before_destroy = true
+  # }
 }
 
-data "aws_route53_zone" "zbeda_site" {
-  name         = var.domain-name
-  private_zone = false
-}
+# data "aws_route53_zone" "zbeda_site" {
+#   name         = var.domain-name
+#   private_zone = false
+# }
 
 resource "aws_route53_record" "zbeda_site" {
   for_each = {
@@ -220,48 +220,7 @@ resource "aws_route53_record" "zbeda_site" {
   records         = [each.value.record]
   ttl             = 60
   type            = each.value.type
-  zone_id         = data.aws_route53_zone.zbeda_site.zone_id
-}
-
-resource "aws_acm_certificate_validation" "zbeda_site" {
-  certificate_arn         = aws_acm_certificate.zbeda_site.arn
-  validation_record_fqdns = [for record in aws_route53_record.zbeda_site : record.fqdn]
-}
-
-## Create certificate 
-
-resource "aws_acm_certificate" "zbeda_site" {
-  domain_name       = var.domain-name
-  subject_alternative_names = ["${var.consul-domain-name}.${var.domain-name}" , "${var.jenkins-domain-name}.${var.domain-name}"]
-  validation_method = "DNS"
-
-  tags = {
-    Name = "alb1-sg-${var.project_name}"
-    env = var.tag_enviroment
-  }
-}
-
-
-data "aws_route53_zone" "zbeda_site" {
-  name         = var.domain-name
-  private_zone = false
-}
-
-resource "aws_route53_record" "zbeda_site" {
-  for_each = {
-    for dvo in aws_acm_certificate.zbeda_site.domain_validation_options : dvo.domain_name => {
-      name   = dvo.resource_record_name
-      record = dvo.resource_record_value
-      type   = dvo.resource_record_type
-    }
-  }
-
-  allow_overwrite = true
-  name            = each.value.name
-  records         = [each.value.record]
-  ttl             = 60
-  type            = each.value.type
-  zone_id         = data.aws_route53_zone.zbeda_site.zone_id
+  zone_id         = aws_route53_zone.primary_domain.zone_id
 }
 
 resource "aws_acm_certificate_validation" "zbeda_site" {
