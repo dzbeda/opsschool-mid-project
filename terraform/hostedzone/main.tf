@@ -9,6 +9,13 @@ resource "aws_route53_zone" "primary_domain" {
     enviroment = var.tag_enviroment
   }
 }
+
+# resource "null_resource" "update_name_server" {
+#   provisioner "local-exec" {
+#     command =  "curl -u 'dzbeda:01568a6b96d83ba121e9f63be0f729a22d58788a' 'https://api.name.com/v4/domains/zbeda.site:setNameservers' -X POST -H 'Content-Type: application/json' --data '{'nameservers':["${aws_route53_zone.primary_domain.name_servers[0]}","${aws_route53_zone.primary_domain.name_servers[1]}","${aws_route53_zone.primary_domain.name_servers[2]}","${aws_route53_zone.primary_domain.name_servers[3]}"]}'"
+#   }
+# }
+
 # resource "aws_route53_record" "jenkins_record" {
 #   zone_id = aws_route53_zone.primary_domain.zone_id
 #   name    = "${var.jenkins-domain-name}.${var.domain-name}"
@@ -66,8 +73,3 @@ resource "aws_route53_zone" "primary_domain" {
 #   depends_on = [aws_acm_certificate_validation.zbeda_site]
 #   create_duration = "60s"
 # }
-
-  provisioner "local-exec" {
-    command = curl -u 'dzbeda:01568a6b96d83ba121e9f63be0f729a22d58788a' 'https://api.name.com/v4/domains/zbeda.site:setNameservers' -X POST -H 'Content-Type: application/json' --data '{"nameservers":["aws_route53_zone.primary_domain","ns-1904.awsdns-46.co.uk","ns-436.awsdns-54.com","ns-944.awsdns-54.net"]}'
-    }
-}

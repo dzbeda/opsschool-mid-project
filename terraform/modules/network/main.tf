@@ -160,26 +160,27 @@ resource "aws_security_group" "alb1_sg" {
   }
 }
 
-## Create Hosted Zone and DNS records 
-resource "aws_route53_zone" "primary_domain" {
-  name = var.domain-name
-  lifecycle {
-    prevent_destroy = false
-  }
-  tags = {
-    Name = "hostedzone-${var.project_name}"
-    enviroment = var.tag_enviroment
-  }
-}
+# ## Create Hosted Zone and DNS records 
+# resource "aws_route53_zone" "primary_domain" {
+#   name = var.domain-name
+#   lifecycle {
+#     prevent_destroy = false
+#   }
+#   tags = {
+#     Name = "hostedzone-${var.project_name}"
+#     enviroment = var.tag_enviroment
+#   }
+# }
+
 resource "aws_route53_record" "jenkins_record" {
-  zone_id = aws_route53_zone.primary_domain.zone_id
+  zone_id = data.aws_route53_zone.primary_domain.zone_id
   name    = "${var.jenkins-domain-name}.${var.domain-name}"
   type    = "CNAME"
   ttl     = "300"
   records = [aws_alb.alb1.dns_name]
 }
 resource "aws_route53_record" "consul_record" {
-  zone_id = aws_route53_zone.primary_domain.zone_id
+  zone_id = data.aws_route53_zone.primary_domain.zone_id
   name    = "${var.consul-domain-name}.${var.domain-name}"
   type    = "CNAME"
   ttl     = "300"
@@ -198,10 +199,10 @@ resource "aws_acm_certificate" "zbeda_site" {
   }
 }
 
-# data "aws_route53_zone" "zbeda_site" {
-#   name         = var.domain-name
-#   private_zone = false
-# }
+data "aws_route53_zone" "primary_domain" {
+  name         = var.domain-name
+  private_zone = false
+}
 
 resource "aws_route53_record" "zbeda_site" {
   for_each = {
@@ -217,7 +218,7 @@ resource "aws_route53_record" "zbeda_site" {
   records         = [each.value.record]
   ttl             = 60
   type            = each.value.type
-  zone_id         = aws_route53_zone.primary_domain.zone_id
+  zone_id         = data.aws_route53_zone.primary_domain.zone_id
 }
 
 resource "aws_acm_certificate_validation" "zbeda_site" {
