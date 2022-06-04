@@ -1,9 +1,11 @@
-- name: Apt-get update
-  apt:
-    update_cache: yes
+- name: remove apt locak file
+  file:
+    state: absent
+    path: /var/lib/dpkg/lock
 
 - name: install packages
   apt:
+    update_cache: yes
     pkg:
         - openjdk-11-jdk
         - git

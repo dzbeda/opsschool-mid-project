@@ -163,11 +163,11 @@ resource "aws_security_group" "alb1_sg" {
 ## Create Hosted Zone and DNS records 
 resource "aws_route53_zone" "primary_domain" {
   name = var.domain-name
-  # lifecycle {
-  #   prevent_destroy = true
-  # }
+  lifecycle {
+    prevent_destroy = false
+  }
   tags = {
-    Name = "alb1-${var.project_name}"
+    Name = "hostedzone-${var.project_name}"
     enviroment = var.tag_enviroment
   }
 }
@@ -193,12 +193,9 @@ resource "aws_acm_certificate" "zbeda_site" {
   validation_method = "DNS"
 
   tags = {
-    Environment = "test"
+    Name = "certificate-${var.project_name}"
+    enviroment = var.tag_enviroment
   }
-
-  # lifecycle {
-  #   create_before_destroy = true
-  # }
 }
 
 # data "aws_route53_zone" "zbeda_site" {
