@@ -21,7 +21,6 @@ module "network" {
      domain-name = var.domain-name
      jenkins-domain-name = var.jenkins-domain-name-record-extantion
      consul-domain-name = var.consul-domain-name-record-extantion
-
 }
 module "ansible-server"{
      source = "./modules/ansible-server"
@@ -92,7 +91,6 @@ module "eks-cluster"{
   jenkins_role_name = aws_iam_role.jenkins-role.name
   jenkins_role_arn = aws_iam_role.jenkins-role.arn
 }
-
 resource "time_sleep" "wait_60_seconds" {
   depends_on = [module.eks-cluster]
   create_duration = "60s"

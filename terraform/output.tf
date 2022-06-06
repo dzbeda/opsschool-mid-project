@@ -37,13 +37,4 @@ output "eks-oidc_provider_arn" {
 output "cluster_endpoint" {
   value = module.eks-cluster.cluster_endpoint
 }
-output "hosted-zone-name-server" {
-    value = module.network.hosted-zone-name-server
-}
-
-
-
-
-
-
 

@@ -61,25 +61,25 @@ module "eks" {
     eks_group_1 = {
       min_size     = 2
       max_size     = 6
-      desired_size = 1
+      desired_size = 2
       instance_types = ["t2.medium"]
     }
 
     eks_group_2 = {
       min_size     = 2
       max_size     = 6
-      desired_size = 1
+      desired_size = 2
       instance_types = ["t2.medium"]
 
     }
   }
 }
 
-data "aws_eks_cluster" "eks" {
+data "aws_eks_cluster_auth" "eks" {
   name = module.eks.cluster_id
 }
 
-data "aws_eks_cluster_auth" "eks" {
+data "aws_eks_cluster" "eks" {
   name = module.eks.cluster_id
 }
 
