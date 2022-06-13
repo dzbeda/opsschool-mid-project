@@ -37,4 +37,6 @@ output "eks-oidc_provider_arn" {
 output "cluster_endpoint" {
   value = module.eks-cluster.cluster_endpoint
 }
-
+output "ingres" {
+    value = module.alb-ingress-controller
+}

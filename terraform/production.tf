@@ -21,6 +21,7 @@ module "network" {
      domain-name = var.domain-name
      jenkins-domain-name = var.jenkins-domain-name-record-extantion
      consul-domain-name = var.consul-domain-name-record-extantion
+     eks_cluster_name = var.eks_cluster_name
 }
 module "ansible-server"{
      source = "./modules/ansible-server"
@@ -84,12 +85,17 @@ module "jenkins"{
 module "eks-cluster"{
   source = "./modules/eks-cluster"
   vpc_id = module.vpc.vpcid
+  aws_region = var.aws_region
   subnet_ids   = module.network.private-subnet-id
   eks_cluster_name = var.eks_cluster_name
   tag_enviroment= var.tag_enviroment
   project_name = var.project_name
   jenkins_role_name = aws_iam_role.jenkins-role.name
   jenkins_role_arn = aws_iam_role.jenkins-role.arn
+  app_name   = var.app_name
+  app_task   = var.app_task 
+  app_owner  = var.app_owner
+  created_by = var.created_by
 }
 resource "time_sleep" "wait_60_seconds" {
   depends_on = [module.eks-cluster]

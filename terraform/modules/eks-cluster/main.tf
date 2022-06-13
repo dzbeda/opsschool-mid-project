@@ -30,6 +30,8 @@ module "eks" {
   cluster_name    = var.eks_cluster_name
   cluster_version = var.kubernetes_version
   subnet_ids         = var.subnet_ids
+  create_cloudwatch_log_group            =  false
+  cloudwatch_log_group_retention_in_days =  1
   #create = true
 
   enable_irsa = true
@@ -48,11 +50,16 @@ module "eks" {
     env = var.tag_enviroment
     GithubRepo  = "terraform-aws-eks"
     GithubOrg   = "terraform-aws-modules"
+    Purpose   = "Kubernetes"
+    App_name  = var.app_name
+    Task      = var.app_task
+    Owner     = var.app_owner
+    CreatedBy = var.created_by
   }
   vpc_id = var.vpc_id
   eks_managed_node_group_defaults = {
       ami_type               = "AL2_x86_64"
-      instance_types         = ["t2.micro"]
+      instance_types         = ["t2.medium"]
       vpc_security_group_ids = [aws_security_group.all_worker_mgmt.id]
   }
 
@@ -62,14 +69,14 @@ module "eks" {
       min_size     = 2
       max_size     = 6
       desired_size = 2
-      instance_types = ["t2.medium"]
+      instance_types = ["t3.medium"]
     }
 
     eks_group_2 = {
       min_size     = 2
       max_size     = 6
       desired_size = 2
-      instance_types = ["t2.medium"]
+      instance_types = ["t3.large"]
 
     }
   }
@@ -82,6 +89,7 @@ data "aws_eks_cluster_auth" "eks" {
 data "aws_eks_cluster" "eks" {
   name = module.eks.cluster_id
 }
+data "aws_caller_identity" "current" {}
 
 module "iam_assumable_role_admin" {
   source                        = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
@@ -95,6 +103,8 @@ module "iam_assumable_role_admin" {
 }
 
 provider "kubernetes" {
+  config_path            = "~/.kube/config"
+  config_context         = "arn:aws:eks:${var.aws_region}:${data.aws_caller_identity.current.account_id}:cluster/${var.eks_cluster_name}"
   host                   = data.aws_eks_cluster.eks.endpoint
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.eks.certificate_authority[0].data)
   token                  = data.aws_eks_cluster_auth.eks.token
