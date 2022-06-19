@@ -11,6 +11,7 @@ resource "aws_instance" "ansible_server" {
     Name = "ansible-server-${var.project_name}"
     env = var.tag_enviroment
     role = "ansible-server"
+    consul_server = var.is_consul_server
   }
 }
 

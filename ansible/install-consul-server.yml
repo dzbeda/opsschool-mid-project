@@ -2,18 +2,10 @@
   remote_user: ubuntu
   become: yes
   vars:
-    consul_version: "1.11.4"
-    consul_dc_name: mid-project
+    consul_server: "true"
+    #consul_version: "1.11.4"    
+    #consul_dc_name: mid-project
   tasks:
-    - name: verify if consuled is installed & consul version 
-      shell: consul -version
-      register: consul_version_output
-      ignore_errors: yes
-
-    # - debug:
-    #     msg: version is diffrent
-    #   when: 'consul_version not in output.stdout'
-
-    - name: run consul-server
+    - name: Install baseline pack (Consul,node-exporter)
       include_role:
-        name: consul-server
+        name: baseline-pack

@@ -6,3 +6,4 @@ variable "vpc_id" {}
 variable "ami_id" {}
 variable "key_name" {}
 variable "ssh_enable_ip" {}
+variable "is_consul_server" {}

@@ -32,8 +32,9 @@ module "ansible-server"{
      tag_enviroment= var.tag_enviroment
      project_name = var.project_name
      vpc_id = module.vpc.vpcid
-     key_name  = aws_key_pair.mid_project_key.key_name
+     key_name  = aws_key_pair.project_key.key_name
      iam_instance_profile   = aws_iam_instance_profile.ansible-role.name
+     is_consul_server = "false"
 }
 module "bastion-server"{
      source = "./modules/bastion-server"
@@ -43,8 +44,9 @@ module "bastion-server"{
      tag_enviroment= var.tag_enviroment
      project_name = var.project_name
      vpc_id = module.vpc.vpcid
-     key_name  = aws_key_pair.mid_project_key.key_name
+     key_name  = aws_key_pair.project_key.key_name
      ssh_enable_ip = var.bastion_enable_ip_for_ssh
+     is_consul_server = "false"
 }
 
 module "consul-server"{
@@ -57,10 +59,11 @@ module "consul-server"{
      tag_enviroment= var.tag_enviroment
      project_name = var.project_name
      vpc_id = module.vpc.vpcid
-     key_name  = aws_key_pair.mid_project_key.key_name
+     key_name  = aws_key_pair.project_key.key_name
      iam_instance_profile   = aws_iam_instance_profile.consul-role.name
      jenkins_security_group_id = module.jenkins.jenkins-security-group-id
      alb1_security_group_id = module.network.alb1-security-group-id
+     is_consul_server = "true"
 }
 module "jenkins"{
      depends_on = [time_sleep.wait_60_seconds]
@@ -75,12 +78,12 @@ module "jenkins"{
      tag_enviroment= var.tag_enviroment
      project_name = var.project_name
      vpc_id = module.vpc.vpcid
-     key_name  = aws_key_pair.mid_project_key.key_name
-     private_key_file_name = var.private_key_file_name
+     key_name  = aws_key_pair.project_key.key_name
      iam_instance_profile   = aws_iam_instance_profile.jenkins-role.name
      alb1_security_group_id = module.network.alb1-security-group-id
      aws_region = var.aws_region
      eks_cluster_name = var.eks_cluster_name
+     is_consul_server = "false"
 }
 module "eks-cluster"{
   source = "./modules/eks-cluster"

@@ -3,20 +3,18 @@
   vars:
     eks_cluster_name: "{{ lookup('env','EKS_CLUSTER_NAME') }}"
     aws_region: "{{ lookup('env','AWS_REGION') }}"
-    # aws_access_key_id: "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
-    # aws_secret_access_key: "{{ lookup('env','AWS_SECRET_ACCESS_KEY') }}"
+    consul_server: "false"
+    #consul_version: "1.11.4"    
+    #consul_dc_name: mid-project
   become: yes
   tasks:
+    - name: Install baseline pack (Consul,node-exporter)
+      include_role:
+        name: baseline-pack
+
     - name: Install prerequsites for jenkins node
       include_role:
         name: jenkins-node
-    
-    - name: Install consul agent
-      include_role:
-        name: consul-agent
-      vars:
-        consul_version: "1.11.4"
-        consul_dc_name: mid-project
 
     - name: run docker installation
       include_role:
@@ -32,14 +30,6 @@
         name: trivy-docker-scan
       vars:
         trivy_version: "0.23.0"
-
-    # - name: update aws configuration
-    #   shell: "aws configure set {{item.command}} {{item.var}}"
-    #   with_items:
-    #     - { command: aws_access_key_id , var: "{{aws_access_key_id}}" }
-    #     - { command: aws_secret_access_key , var: "{{aws_secret_access_key}}" } 
-    #     - { command: default.region , var: "{{aws_region}}" }
-    #   become: no
 
     - name: update kubectl configuration
       shell: aws eks update-kubeconfig --region {{ aws_region }} --name {{ eks_cluster_name }}

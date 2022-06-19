@@ -10,7 +10,7 @@ variable "private_subnet_id" {}
 variable "jenkins-node-instance-type" {}
 variable "jenkins-server-instance-type" {}
 variable "alb1_security_group_id" {}
-variable "private_key_file_name" {}
 variable "jenkins_master_number_of_servers" {}
 variable "aws_region" {}
 variable "eks_cluster_name" {}
+variable "is_consul_server" {}

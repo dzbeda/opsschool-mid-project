@@ -14,6 +14,7 @@ resource "aws_instance" "jenkins_server" {
     enviroment= var.tag_enviroment
     project_name = var.project_name
     role = "jenkins-server"
+    consul_server = var.is_consul_server
   }
 }
 
@@ -32,8 +33,8 @@ resource "aws_instance" "jenkins_node" {
     Name = "jenkins-node-${count.index + 1}-${var.project_name}"
     tag_enviroment= var.tag_enviroment
     project_name = var.project_name
-    consul_server = "false"
     role = "jenkins-node"
+    consul_server = var.is_consul_server
   }
 }
 

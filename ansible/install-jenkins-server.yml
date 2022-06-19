@@ -5,14 +5,15 @@
     jenkins_ui_port: 9000
     webhook_key: "6be78799-a6ff-4649-aba2-3dddfcd37d17"
     webhook_secret: "Lwo0NQFAtO15"
+    consul_server: "false"
+    #consul_version: "1.11.4"    
+    #consul_dc_name: mid-project
   tasks:
 
-    - name: Install consul agent
+    - name: Install baseline pack (Consul,node-exporter)
       include_role:
-        name: consul-agent
-      vars:
-        consul_version: "1.11.4"
-        consul_dc_name: mid-project
+        name: baseline-pack
+
 
     - name: run jenkins-server
       include_role:

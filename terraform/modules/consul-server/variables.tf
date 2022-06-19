@@ -9,3 +9,4 @@ variable "iam_instance_profile" {}
 variable "private_subnet_id" {}
 variable "jenkins_security_group_id" {}
 variable "alb1_security_group_id" {}
+variable "is_consul_server" {}

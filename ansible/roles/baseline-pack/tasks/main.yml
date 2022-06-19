@@ -1,0 +1,7 @@
+---
+- include_role: 
+      name: node-exporter
+- include_role: 
+      name: consul
+# - include: install-packages.yml
+# - include: install-consul.yml

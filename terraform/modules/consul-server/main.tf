@@ -13,8 +13,8 @@ resource "aws_instance" "consul_server" {
     Name = "consul-server-${count.index + 1}-${var.project_name}"
     tag_enviroment= var.tag_enviroment
     project_name = var.project_name
-    consul_server = "true"
     role = "consul-server"
+    consul_server = var.is_consul_server
   }
 }
 
