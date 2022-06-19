@@ -1,6 +1,6 @@
 ## Role for jenkins
 resource "aws_iam_role" "jenkins-role" {
-  name = "mid-project-jenkins-role"
+  name = "project-jenkins-role"
 
   assume_role_policy = <<EOF
 {
@@ -19,7 +19,7 @@ resource "aws_iam_role" "jenkins-role" {
 EOF
 }
 resource "aws_iam_policy" "jenkins-policy" {
-  name        = "mid-project-jenkins-policy"
+  name        = "project-jenkins-policy"
   description = "this police will be used for jenkins"
 
   policy = <<EOF
@@ -50,14 +50,14 @@ resource "aws_iam_role_policy_attachment" "jenkins-policy-attach" {
   policy_arn = aws_iam_policy.jenkins-policy.arn
 }
 resource "aws_iam_instance_profile" "jenkins-role" {
-  name  = "mid-project-jenkins-role-profile"
+  name  = "project-jenkins-role-profile"
   role = aws_iam_role.jenkins-role.name
 }
 
 ## Role for ansible
 
 resource "aws_iam_role" "ansible-role" {
-  name = "mid-project-ansible-role"
+  name = "project-ansible-role"
 
   assume_role_policy = <<EOF
 {
@@ -76,7 +76,7 @@ resource "aws_iam_role" "ansible-role" {
 EOF
 }
 resource "aws_iam_policy" "ansible-policy" {
-  name        = "mid-project-ansible-policy"
+  name        = "project-ansible-policy"
   description = "this police will be used for ansible"
 
   policy = <<EOF
@@ -102,13 +102,13 @@ resource "aws_iam_role_policy_attachment" "ansible-policy-attach" {
   policy_arn = aws_iam_policy.ansible-policy.arn
 }
 resource "aws_iam_instance_profile" "ansible-role" {
-  name  = "mid-project-ansible-role-profile"
+  name  = "project-ansible-role-profile"
   role = aws_iam_role.ansible-role.name
 }
 
 ## Role for consul
 resource "aws_iam_role" "consul-role" {
-  name = "mid-project-consul-role"
+  name = "project-consul-role"
 
   assume_role_policy = <<EOF
 {
@@ -128,7 +128,7 @@ EOF
 }
 
 resource "aws_iam_policy" "consul-policy" {
-  name        = "mid-project-consul-policy"
+  name        = "project-consul-policy"
   description = "this police will be used for consul"
 
   policy = <<EOF
@@ -166,7 +166,7 @@ resource "aws_iam_role_policy_attachment" "consul-policy-attach" {
   policy_arn = aws_iam_policy.consul-policy.arn
 }
 resource "aws_iam_instance_profile" "consul-role" {
-  name  = "mid-project-consul-role-profile"
+  name  = "project-consul-role-profile"
   role = aws_iam_role.consul-role.name
 }
 
@@ -174,7 +174,7 @@ resource "aws_iam_instance_profile" "consul-role" {
 ## Role for EKS cluster
 
 resource "aws_iam_role" "eks-role" {
-  name = "mid-project-eks-role"
+  name = "project-eks-role"
 
   assume_role_policy = <<EOF
 {
@@ -194,7 +194,7 @@ EOF
 }
 
 resource "aws_iam_policy" "eks-policy" {
-  name        = "mid-project-eks-policy"
+  name        = "project-eks-policy"
   description = "this police will be used for eks"
 
   policy = <<EOF
@@ -252,6 +252,6 @@ resource "aws_iam_role_policy_attachment" "eks-policy-attach" {
   policy_arn = aws_iam_policy.eks-policy.arn
 }
 resource "aws_iam_instance_profile" "eks-role" {
-  name  = "mid-project-eks-role-profile"
+  name  = "project-eks-role-profile"
   role = aws_iam_role.eks-role.name
 }
