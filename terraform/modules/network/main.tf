@@ -103,9 +103,11 @@ resource "aws_alb" "alb1" {
 }
 
 resource "aws_alb_listener" "consul" {
+  depends_on = [time_sleep.wait_for_certificate_verification]
   load_balancer_arn = aws_alb.alb1.arn
+  certificate_arn = aws_acm_certificate.zbeda_site.arn
   port              = "8500"
-  protocol          = "HTTP"
+  protocol          = "HTTPS"
 
   default_action {
     type             = "forward"
@@ -138,13 +140,13 @@ resource "aws_security_group" "alb1_sg" {
     cidr_blocks = ["0.0.0.0/0"]
     description = "Allow consul UI access"
   }
-  ingress {
-    from_port = 9000
-    to_port =  9000
-    protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-    description = "Allow jenkins UI access"
-  }
+  # ingress {
+  #   from_port = 9000
+  #   to_port =  9000
+  #   protocol = "tcp"
+  #   cidr_blocks = ["0.0.0.0/0"]
+  #   description = "Allow jenkins UI access"
+  # }
   ingress {
     from_port = 443
     to_port =  443
@@ -163,19 +165,6 @@ resource "aws_security_group" "alb1_sg" {
     env = var.tag_enviroment
   }
 }
-
-# ## Create Hosted Zone and DNS records 
-# resource "aws_route53_zone" "primary_domain" {
-#   name = var.domain-name
-#   lifecycle {
-#     prevent_destroy = false
-#   }
-#   tags = {
-#     Name = "hostedzone-${var.project_name}"
-#     enviroment = var.tag_enviroment
-#   }
-# }
-
 resource "aws_route53_record" "jenkins_record" {
   zone_id = data.aws_route53_zone.primary_domain.zone_id
   name    = "${var.jenkins-domain-name}.${var.domain-name}"
