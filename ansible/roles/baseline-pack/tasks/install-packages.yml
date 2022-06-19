@@ -1,0 +1,11 @@
+- name: remove apt locak file
+  file:
+    state: absent
+    path: /var/lib/dpkg/lock
+
+- name: install packages
+  apt:
+    update_cache: yes
+    pkg:
+        - unzip
+

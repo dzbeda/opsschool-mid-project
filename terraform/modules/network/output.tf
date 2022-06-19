@@ -16,6 +16,6 @@ output "jenkins-server-dns-name" {
 output "consul-server-dns-name" {
     value = aws_route53_record.consul_record.name
 }
-output "hosted-zone-name-server" {
-    value = aws_route53_zone.primary_domain.name_servers
-}
+# output "hosted-zone-name-server" {
+#     value = aws_route53_zone.primary_domain.name_servers
+# }

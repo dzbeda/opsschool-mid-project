@@ -9,6 +9,7 @@ resource "aws_instance" "bastion_server" {
     Name = "bastion-server-${var.project_name}"
     env = var.tag_enviroment
     role = "bastion-server"
+    consul_server = var.is_consul_server
   }
 }
 

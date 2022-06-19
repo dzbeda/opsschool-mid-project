@@ -1,4 +1,5 @@
 variable "vpc_id" {}
+variable "aws_region" {}
 variable "subnet_ids" {}
 variable "tag_enviroment" {}
 variable "project_name" {}
@@ -13,3 +14,8 @@ locals {
   k8s_service_account_namespace = "default"
   k8s_service_account_name      = "opsschool-sa"
 }
+variable  "app_name" {}
+variable  "app_task" {}
+variable  "app_owner" {}
+variable  "created_by" {}
+

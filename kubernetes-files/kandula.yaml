@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kandula-deployment
+spec:
+  selector:
+    matchLabels:
+      app: kandula
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: kandula
+    spec:
+      containers:
+      - name: kandula
+        image: dzbeda/mid-project:7
+        ports:
+        - containerPort: 5000
+        env:
+        - name: AWS_DEFAULT_REGION
+          value: us-east-1
+        - name: FLASK_ENV
+          value: development
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+              secretKeyRef:
+                     name: kandula-secret
+                     key: AWS_ACCESS_KEY_ID
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+              secretKeyRef:
+                     name: kandula-secret
+                     key: AWS_SECRET_ACCESS_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kandula-service
+spec:
+  selector:
+    app: kandula
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 5000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kandula-ingress
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    alb.ingress.kubernetes.io/group.name: kandula
+spec:
+  rules:
+  - host: kandula.zbeda.site
+    http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kandula-service
+                port:
+                  number: 80

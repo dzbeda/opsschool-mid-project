@@ -47,5 +47,10 @@ variable "bastion_enable_ip_for_ssh" {}
 variable "domain-name" {}
 variable "jenkins-domain-name-record-extantion" {}
 variable "consul-domain-name-record-extantion" {}
+variable "kandula-domain-name-record-extantion" {}
+variable  "app_name" {}
+variable  "app_task" {}
+variable  "app_owner" {}
+variable  "created_by" {}
 
 
