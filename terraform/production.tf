@@ -100,6 +100,21 @@ module "eks-cluster"{
   app_owner  = var.app_owner
   created_by = var.created_by
 }
+module "posgres_rds" {
+  source = "./modules/postgres-rds"
+  vpc_id = module.vpc.vpcid
+  private_subnet_id = module.network.private-subnet-id
+  storage_size = 10
+  rds_name = "kanduladb"
+  postgres_version = "12.7"
+  posgres_rds_instance_type = "db.t3.micro"
+  username = "postgres"
+  password = "thispassword"
+  publicly_accessible = false
+  project_name = var.project_name
+  tag_enviroment= var.tag_enviroment
+
+}
 resource "time_sleep" "wait_60_seconds" {
   depends_on = [module.eks-cluster]
   create_duration = "60s"
