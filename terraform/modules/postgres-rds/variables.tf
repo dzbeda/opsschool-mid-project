@@ -1,0 +1,11 @@
+variable "storage_size" {}
+variable "rds_name" {}
+variable "postgres_version" {}
+variable "posgres_rds_instance_type" {}
+variable "username" {}
+variable "password" {}
+variable "publicly_accessible" {}
+variable "project_name" {}
+variable "tag_enviroment" {}
+variable "vpc_id" {}
+variable "private_subnet_id" {}
