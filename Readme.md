@@ -1,5 +1,5 @@
 # The Kandula project #
-  OpsSchool - Mid project 
+  OpsSchool
 
 
 ## Mid-project installation ##
@@ -57,8 +57,13 @@ There are 2 options to install the execution server
 6. Install ekscli - How to install ? Run the following command
     1. curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
     2. sudo mv /tmp/eksctl /usr/local/bin
-7. Update "/etc/ssh/ssh_config" file with the follwoing "StrictHostKeyChecking no"
-8. Clone repo - How to install ? Run the following command
+7. Install Helm - How to install ? Run the following command
+    1. curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get_helm.sh
+    2. chmod 700 get_helm.sh
+    3. ./get_helm.sh
+     **If you get a message that openssl must first be installed, one method to install it would be: sudo yum install openssl
+9. Update "/etc/ssh/ssh_config" file with the follwoing "StrictHostKeyChecking no"
+10. Clone repo - How to install ? Run the following command
     1. Open a new folder named “mid-project”  - run the following commands 
       1. mkdir mid-project
     2. cd mid-project
