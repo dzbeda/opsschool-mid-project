@@ -34,6 +34,11 @@ sudo mv ./kubectl /usr/local/bin
 echo " ### Start installing EKScli ###"
 curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 sudo mv /tmp/eksctl /usr/local/bin
+## Install Helm
+echo " ### Start installing Helm ###"
+curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get_helm.sh
+chmod 700 get_helm.sh
+./get_helm.sh
 # Update SSH configuartion
 echo " ### Update ssh_config ###"
 sudo chmod o+w /etc/ssh/ssh_config
