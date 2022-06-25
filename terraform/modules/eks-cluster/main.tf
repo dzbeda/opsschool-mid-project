@@ -19,6 +19,26 @@ resource "aws_security_group" "all_worker_mgmt" {
 
     cidr_blocks = ["0.0.0.0/0"]
   }
+  ingress {
+    from_port = 9090
+    to_port   = 9090
+    protocol  = "tcp"
+
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port = 3000
+    to_port   = 3000
+    protocol  = "tcp"
+
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
   tags = {
     Name = "eks-sg-${var.project_name}"
     env = var.tag_enviroment
@@ -60,7 +80,6 @@ module "eks" {
   eks_managed_node_group_defaults = {
       ami_type               = "AL2_x86_64"
       instance_types         = ["t2.medium"]
-      vpc_security_group_ids = [aws_security_group.all_worker_mgmt.id]
   }
 
   eks_managed_node_groups = {
@@ -70,6 +89,7 @@ module "eks" {
       max_size     = 6
       desired_size = 2
       instance_types = ["t3.medium"]
+      vpc_security_group_ids = [aws_security_group.all_worker_mgmt.id]
     }
 
     eks_group_2 = {
@@ -77,6 +97,7 @@ module "eks" {
       max_size     = 6
       desired_size = 2
       instance_types = ["t3.large"]
+      vpc_security_group_ids = [aws_security_group.all_worker_mgmt.id]
 
     }
   }
