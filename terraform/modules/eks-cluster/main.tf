@@ -16,23 +16,92 @@ resource "aws_security_group" "all_worker_mgmt" {
     from_port = 22
     to_port   = 22
     protocol  = "tcp"
-
     cidr_blocks = ["0.0.0.0/0"]
   }
   ingress {
     from_port = 9090
     to_port   = 9090
     protocol  = "tcp"
-
     cidr_blocks = ["0.0.0.0/0"]
   }
   ingress {
     from_port = 3000
     to_port   = 3000
     protocol  = "tcp"
-
     cidr_blocks = ["0.0.0.0/0"]
   }
+  ingress {
+    from_port = 8600
+    to_port   = 8600
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port = 8300
+    to_port   = 8300
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port = 8500
+    to_port   = 8500
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port = 8301
+    to_port   = 8301
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port = 8302
+    to_port   = 8302
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port = 53
+    to_port   = 53
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port = 9100
+    to_port   = 9100
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port = 9153
+    to_port   = 9153
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port = 8080
+    to_port   = 8080
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port = 9091
+    to_port   = 9091
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  # ingress {
+  #   from_port = 21000
+  #   to_port   = 21000
+  #   protocol  = "tcp"
+  #   cidr_blocks = ["0.0.0.0/0"]
+  # }
+  # ingress {
+  #   from_port = 21255
+  #   to_port   = 21255
+  #   protocol  = "tcp"
+  #   cidr_blocks = ["0.0.0.0/0"]
+  # }
   egress {
     from_port        = 0
     to_port          = 0
@@ -101,6 +170,36 @@ module "eks" {
 
     }
   }
+  # cluster_security_group_additional_rules = {
+  #   egress_nodes_ephemeral_ports_tcp = {
+  #     description                = "To node 1025-65535"
+  #     protocol                   = "tcp"
+  #     from_port                  = 0
+  #     to_port                    = 65535
+  #     type                       = "egress"
+  #     source_node_security_group = true
+  #   }
+  # }
+
+  # node_security_group_additional_rules = {
+  #   ingress_self_all = {
+  #     description = "Node to node all ports/protocols"
+  #     protocol    = "-1"
+  #     from_port   = 0
+  #     to_port     = 0
+  #     type        = "ingress"
+  #     self        = true
+  #   }
+  #   egress_all = {
+  #     description      = "Node all egress"
+  #     protocol         = "-1"
+  #     from_port        = 0
+  #     to_port          = 0
+  #     type             = "egress"
+  #     cidr_blocks      = ["0.0.0.0/0"]
+  #     ipv6_cidr_blocks = ["::/0"]
+  #   }
+  # }
 }
 
 data "aws_eks_cluster_auth" "eks" {
