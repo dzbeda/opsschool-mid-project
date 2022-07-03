@@ -6,6 +6,7 @@ sudo apt-get update
 echo " ### Start installing supported packages ###"
 sudo apt-get install -y python3
 sudo apt-get install -y python3-pip
+sudo apt install python3-psycopg2
 sudo apt-get install -y awscli
 sudo apt-get install -y git
 sudo apt-get install -y unzip
