@@ -16,6 +16,7 @@ pip3 install --upgrade awscli
 echo " ### Start installing Ansible ###"
 sudo pip3 install ansible
 ansible-galaxy collection install amazon.aws
+ansible-galaxy collection install community.postgresql
 # Clone project repo
 echo " ### Cloning repo ###"
 mkdir mid-project
