@@ -46,6 +46,7 @@ There are 2 options to install the execution server
 3. Install Ansible - how to install ? Run the following command
     1. sudo pip3 install ansible
     2. ansible-galaxy collection install amazon.aws
+    3. ansible-galaxy collection install community.postgresql
 4. Terraform - How to install ? Run the following command
     1.  curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
     2. sudo apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
