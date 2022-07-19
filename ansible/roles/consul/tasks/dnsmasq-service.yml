@@ -5,7 +5,7 @@
 
 - name: install packages
   apt:
-    update_cache: yes
+    #update_cache: yes
     pkg:
         - dnsmasq
 
