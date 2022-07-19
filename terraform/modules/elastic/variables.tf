@@ -8,3 +8,4 @@ variable "alb1_security_group_id" {}
 variable "is_consul_server" {}
 variable "private_subnet_id" {}
 variable "key_name" {}
+variable "iam_instance_profile" {}

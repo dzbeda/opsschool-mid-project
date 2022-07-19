@@ -2,6 +2,7 @@ resource "aws_instance" "elastic_server" {
   count = var.create_elastic_server
   ami           = var.elastic_server_ami_id
   instance_type = var.elastic-server-instance-type
+  iam_instance_profile = var.iam_instance_profile
   subnet_id =  element(var.private_subnet_id, count.index)
   key_name      = var.key_name
   vpc_security_group_ids = [aws_security_group.elastic.id]

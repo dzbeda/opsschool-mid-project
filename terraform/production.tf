@@ -124,6 +124,7 @@ module "elastic"{
      depends_on = [module.bastion-server]
      source = "./modules/elastic"
      elastic_server_ami_id = "ami-0a50f304e0625e0b6"
+     iam_instance_profile   = aws_iam_instance_profile.jenkins-role.name
      create_elastic_server = var.create-elastic-server? 1 : 0
      elastic-server-instance-type = var.elastic-server-instance-type
      private_subnet_id = module.network.private-subnet-id

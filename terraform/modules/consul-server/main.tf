@@ -64,7 +64,14 @@ resource "aws_security_group" "consul_server" {
     to_port =  53
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-    description = "Allow consul UI access from alb securitygroup"
+    description = "Enable port 53 tcp"
+  }
+  ingress {
+    from_port = 53
+    to_port =  53
+    protocol = "udp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Enable port 53 udp"
   }
   ingress {
     from_port = 9100
