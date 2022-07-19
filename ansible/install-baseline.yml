@@ -1,0 +1,15 @@
+- hosts: _consul_server_false
+  remote_user: ubuntu
+  become: yes
+  vars:
+    consul_version: "1.11.4"
+    consul_dc_name: mid-project
+  tasks:
+    - name: verify if consuled is installed & consul version 
+      shell: consul -version
+      register: consul_version_output
+      ignore_errors: yes
+
+    - name: run consul-server
+      include_role:
+        name: baseline-pack

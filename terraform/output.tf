@@ -40,3 +40,7 @@ output "cluster_endpoint" {
 output "ingres" {
     value = module.alb-ingress-controller
 }
+output "rds-endpoint"{
+    value = module.posgres_rds.rds-endpoint
+}
+

@@ -32,6 +32,16 @@ spec:
               secretKeyRef:
                      name: kandula-secret
                      key: AWS_SECRET_ACCESS_KEY
+        - name: DB_USERNAME
+          valueFrom:
+              secretKeyRef:
+                     name: rds-params
+                     key: DB_USERNAME
+        - name: DB_PASSWORD
+          valueFrom:
+              secretKeyRef:
+                     name: rds-params
+                     key: DB_PASSWORD
 ---
 apiVersion: v1
 kind: Service

@@ -1,0 +1,10 @@
+variable "elastic_server_ami_id" {}
+variable "create_elastic_server" {}
+variable "elastic-server-instance-type" {}
+variable "vpc_id" {}
+variable "project_name" {}
+variable "tag_enviroment" {}
+variable "alb1_security_group_id" {}
+variable "is_consul_server" {}
+variable "private_subnet_id" {}
+variable "key_name" {}

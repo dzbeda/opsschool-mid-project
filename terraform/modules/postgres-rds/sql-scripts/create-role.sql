@@ -1,0 +1,3 @@
+CREATE ROLE dudu
+LOGIN
+PASSWORD '1qaz@WSX';

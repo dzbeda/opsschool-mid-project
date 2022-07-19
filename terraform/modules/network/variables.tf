@@ -17,3 +17,5 @@ variable "domain-name" {}
 variable "jenkins-domain-name" {}
 variable "consul-domain-name" {}
 variable "eks_cluster_name" {}
+variable "elastic-domain-name" {}
+variable "elastic_server_target_group_arn" {}

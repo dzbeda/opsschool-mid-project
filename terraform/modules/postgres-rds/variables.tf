@@ -9,3 +9,5 @@ variable "project_name" {}
 variable "tag_enviroment" {}
 variable "vpc_id" {}
 variable "private_subnet_id" {}
+variable "rds-engine" {}
+variable "bastion-ip" {}

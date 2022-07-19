@@ -50,7 +50,6 @@ resource "aws_security_group" "consul_server" {
     to_port =  8600
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-    #security_groups = [var.alb1_security_group_id]
     description = "Allow consul UI access from alb securitygroup"
   }
   ingress {
@@ -58,15 +57,20 @@ resource "aws_security_group" "consul_server" {
     to_port =  8303
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-    #security_groups = [var.alb1_security_group_id]
     description = "Allow consul UI access from alb securitygroup"
   }
-    ingress {
+  ingress {
     from_port = 53
     to_port =  53
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-    #security_groups = [var.alb1_security_group_id]
+    description = "Allow consul UI access from alb securitygroup"
+  }
+  ingress {
+    from_port = 9100
+    to_port =  9100
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
     description = "Allow consul UI access from alb securitygroup"
   }
   ingress {

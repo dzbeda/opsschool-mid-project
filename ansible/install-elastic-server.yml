@@ -1,0 +1,11 @@
+- hosts: _role_elastic_server
+  remote_user: ubuntu
+  become: yes
+  vars:
+    consul_server: "false"
+    #consul_version: "1.11.4"    
+    #consul_dc_name: mid-project
+  tasks:
+    - name: Install baseline pack (Consul,node-exporter)
+      include_role:
+        name: baseline-pack

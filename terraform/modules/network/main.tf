@@ -127,6 +127,18 @@ resource "aws_alb_listener" "jenkins" {
     target_group_arn = var.jenkins_server_target_group_arn
   }
 }
+resource "aws_alb_listener" "elastic" {
+  depends_on = [time_sleep.wait_for_certificate_verification]
+  load_balancer_arn = aws_alb.alb1.arn
+  certificate_arn = aws_acm_certificate.zbeda_site.arn
+  port              = "5601"
+  protocol          = "HTTPS"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = var.elastic_server_target_group_arn
+  }
+}
 
 ## APB security group
 resource "aws_security_group" "alb1_sg" {
@@ -140,13 +152,13 @@ resource "aws_security_group" "alb1_sg" {
     cidr_blocks = ["0.0.0.0/0"]
     description = "Allow consul UI access"
   }
-  # ingress {
-  #   from_port = 9000
-  #   to_port =  9000
-  #   protocol = "tcp"
-  #   cidr_blocks = ["0.0.0.0/0"]
-  #   description = "Allow jenkins UI access"
-  # }
+  ingress {
+    from_port = 5601
+    to_port =  5601
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow elastic UI access"
+  }
   ingress {
     from_port = 443
     to_port =  443
@@ -168,6 +180,13 @@ resource "aws_security_group" "alb1_sg" {
 resource "aws_route53_record" "jenkins_record" {
   zone_id = data.aws_route53_zone.primary_domain.zone_id
   name    = "${var.jenkins-domain-name}.${var.domain-name}"
+  type    = "CNAME"
+  ttl     = "300"
+  records = [aws_alb.alb1.dns_name]
+}
+resource "aws_route53_record" "elastic_record" {
+  zone_id = data.aws_route53_zone.primary_domain.zone_id
+  name    = "${var.elastic-domain-name}.${var.domain-name}"
   type    = "CNAME"
   ttl     = "300"
   records = [aws_alb.alb1.dns_name]

@@ -18,9 +18,11 @@ module "network" {
      project_name = var.project_name
      consul_target_group_arn = module.consul-server.consul-server-target-group-arn
      jenkins_server_target_group_arn = module.jenkins.jenkins-server-target-group-arn
+     elastic_server_target_group_arn = module.elastic.elastic-server-target-group-arn
      domain-name = var.domain-name
      jenkins-domain-name = var.jenkins-domain-name-record-extantion
      consul-domain-name = var.consul-domain-name-record-extantion
+     elastic-domain-name = var.elastic-domain-name-record-extantion
      eks_cluster_name = var.eks_cluster_name
 }
 module "ansible-server"{
@@ -101,19 +103,37 @@ module "eks-cluster"{
   created_by = var.created_by
 }
 module "posgres_rds" {
+  depends_on = [module.bastion-server]
   source = "./modules/postgres-rds"
   vpc_id = module.vpc.vpcid
   private_subnet_id = module.network.private-subnet-id
   storage_size = 10
-  rds_name = "kanduladb"
+  rds_name = "kandula-ops"
   postgres_version = "12.7"
   posgres_rds_instance_type = "db.t3.micro"
-  username = "postgres"
-  password = "thispassword"
+  username = var.rds_username
+  password = var.rds_password
   publicly_accessible = false
   project_name = var.project_name
   tag_enviroment= var.tag_enviroment
+  rds-engine = var.rds-engine
+  bastion-ip = module.bastion-server.bastion-server-public-ip
 
+}
+module "elastic"{
+     depends_on = [module.bastion-server]
+     source = "./modules/elastic"
+     elastic_server_ami_id = "ami-0a50f304e0625e0b6"
+     create_elastic_server = var.create-elastic-server? 1 : 0
+     elastic-server-instance-type = var.elastic-server-instance-type
+     private_subnet_id = module.network.private-subnet-id
+     tag_enviroment= var.tag_enviroment
+     project_name = var.project_name
+     vpc_id = module.vpc.vpcid
+     key_name  = aws_key_pair.project_key.key_name
+     alb1_security_group_id = module.network.alb1-security-group-id
+     #aws_region = var.aws_region
+     is_consul_server = "false"
 }
 resource "time_sleep" "wait_60_seconds" {
   depends_on = [module.eks-cluster]
@@ -126,6 +146,10 @@ resource "null_resource" "update_kubectl_configuration" {
   }
   provisioner "local-exec" {
     command = "kubectl create secret generic kandula-secret --from-literal=AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID --from-literal=AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY"
+    on_failure = continue
+  }
+  provisioner "local-exec" {
+    command = "kubectl create secret generic rds-params --from-literal=DB_USERNAME=${var.rds_username} --from-literal=DB_PASSWORD=${var.rds_password}"
   }
 }
 # resource "null_resource" "ansible_configuration" {

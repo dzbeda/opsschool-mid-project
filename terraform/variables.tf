@@ -52,5 +52,11 @@ variable  "app_name" {}
 variable  "app_task" {}
 variable  "app_owner" {}
 variable  "created_by" {}
-
+variable  "rds-engine" {}
+#variable "kandula-db-name" {}
+variable "rds_username" {}
+variable "rds_password" {}
+variable "create-elastic-server" {}
+variable "elastic-server-instance-type" {}
+variable "elastic-domain-name-record-extantion" {}
 
